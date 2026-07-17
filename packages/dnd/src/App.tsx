@@ -3,6 +3,7 @@ import { DragExample2 } from './drag-example2'
 import { DragExample3 } from './drag-example3'
 import { DragExample4 } from './drag-example4'
 import { DragExample5 } from './drag-example5'
+import { DragExample6 } from './drag-example6'
 
 export function App() {
   return (
@@ -21,6 +22,7 @@ export function App() {
         <DragExample3 />
         <DragExample4 />
         <DragExample5 />
+        <DragExample6 />
       </div>
     </>
   )
