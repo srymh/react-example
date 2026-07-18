@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import {
   tableFeatures,
   useTable,
@@ -73,6 +75,15 @@ export function Table({ data }: { data: Color[] }) {
       return newSorting
     })
   }
+
+  // Subscribe to sorting state changes
+  useEffect(() => {
+    const { unsubscribe } = table.atoms.sorting.subscribe((sorting) => {
+      console.log('Sorting changed:', sorting)
+    })
+
+    return () => unsubscribe()
+  }, [table])
 
   return (
     <Card title="Sorting" description="Sorting with useTable and tableFeatures">
