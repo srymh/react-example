@@ -1,11 +1,3 @@
-import {
-  tableFeatures,
-  useTable,
-  createColumnHelper,
-  sortFns,
-  rowSortingFeature,
-  createSortedRowModel,
-} from '@tanstack/react-table'
 import { SortAscIcon } from 'lucide-react'
 
 import { Button } from '../../components/button'
@@ -22,14 +14,9 @@ import {
   TableBody,
 } from '../../components/table'
 import type { Color } from '../../data/color'
+import { createAppColumnHelper, useAppTable } from './use-app-table'
 
-const features = tableFeatures({
-  rowSortingFeature, // enables sorting APIs and state
-  sortedRowModel: createSortedRowModel(), // client-side sorting
-  sortFns,
-})
-
-const columnHelper = createColumnHelper<typeof features, Color>()
+const columnHelper = createAppColumnHelper<Color>()
 
 const columns = columnHelper.columns([
   columnHelper.display({
@@ -45,8 +32,7 @@ const columns = columnHelper.columns([
 const initialSorting = [{ id: 'red', desc: true }]
 
 export function Table({ data }: { data: Color[] }) {
-  const table = useTable({
-    features,
+  const table = useAppTable({
     columns,
     data,
     initialState: {
@@ -75,7 +61,10 @@ export function Table({ data }: { data: Color[] }) {
   }
 
   return (
-    <Card title="Sorting" description="Sorting with useTable and tableFeatures">
+    <Card
+      title="Composable Table"
+      description="createTableHook creates an app-specific table factory. Use it to define shared features, row models, and default table options once, then create each React table with the columns and data that are unique to that table."
+    >
       <div className="flex-1">
         <TableComponent>
           <TableHead headerGroups={table.getHeaderGroups()}>

@@ -36,7 +36,7 @@ export function Table({ data }: { data: Color[] }) {
   })
 
   return (
-    <Card>
+    <Card title="Basic Table" description="Basic table with useTable and tableFeatures">
       <TableComponent>
         <TableHead headerGroups={table.getHeaderGroups()}>
           {(headerGroup) => (
