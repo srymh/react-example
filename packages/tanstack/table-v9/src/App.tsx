@@ -1,5 +1,6 @@
 import { createData } from './data/color'
 import { Table as BasicTable } from './table/basic/table'
+import { Table as ColumnOrderingTable } from './table/column-ordering/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
 import { Table as ContextTable } from './table/context/table'
@@ -12,6 +13,7 @@ export function App() {
     <div className="flex flex-col gap-4 p-2">
       <BasicTable data={data} />
       <SortTable data={data} />
+      <ColumnOrderingTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
       <ContextTable data={data} />
