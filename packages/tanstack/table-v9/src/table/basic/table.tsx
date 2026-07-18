@@ -5,9 +5,11 @@ import { ColorCell } from '../../components/color-cell'
 import {
   Table as TableComponent,
   TableCell,
-  TableHeader,
+  TableHeaderCell,
   TableHeaderRow,
   TableRow,
+  TableBody,
+  TableHead,
 } from '../../components/table'
 import type { Color } from '../../data/color'
 
@@ -36,28 +38,29 @@ export function Table({ data }: { data: Color[] }) {
   return (
     <Card>
       <TableComponent>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableHeaderRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHeader key={header.id} isPlaceholder={header.isPlaceholder}>
+        <TableHead headerGroups={table.getHeaderGroups()}>
+          {(headerGroup) => (
+            <TableHeaderRow headers={headerGroup.headers}>
+              {(header) => (
+                <TableHeaderCell>
                   <table.FlexRender header={header} />
-                </TableHeader>
-              ))}
+                </TableHeaderCell>
+              )}
             </TableHeaderRow>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getAllCells().map((cell) => (
-                <TableCell key={cell.id}>
+          )}
+        </TableHead>
+
+        <TableBody rows={table.getRowModel().rows}>
+          {(row) => (
+            <TableRow cells={row.getAllCells()}>
+              {(cell) => (
+                <TableCell>
                   <table.FlexRender cell={cell} />
                 </TableCell>
-              ))}
+              )}
             </TableRow>
-          ))}
-        </tbody>
+          )}
+        </TableBody>
       </TableComponent>
     </Card>
   )
