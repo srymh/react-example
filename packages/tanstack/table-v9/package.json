@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
     "@tanstack/react-table": "9.0.0-beta.19",
+    "lucide-react": "^1.16.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "tailwindcss": "^4.3.2"

@@ -1,4 +1,5 @@
 import type { SortDirection } from '@tanstack/react-table'
+import { SortAscIcon, SortDescIcon } from 'lucide-react'
 
 export function Table({ children }: { children: React.ReactNode }) {
   return (
@@ -23,7 +24,12 @@ export function TableHeader({
 }
 
 export function TableHeaderSortIcon({ isSorted }: { isSorted: false | SortDirection }) {
-  return <span>{isSorted === 'asc' ? ' 🔼' : isSorted === 'desc' ? ' 🔽' : null}</span>
+  const className = 'ml-1 inline-block h-3 w-3'
+  return isSorted === 'asc' ? (
+    <SortAscIcon className={className} />
+  ) : isSorted === 'desc' ? (
+    <SortDescIcon className={className} />
+  ) : null
 }
 
 export function TableRow({ children }: { children: React.ReactNode }) {
