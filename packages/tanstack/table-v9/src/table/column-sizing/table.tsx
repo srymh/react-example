@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   tableFeatures,
@@ -39,12 +39,16 @@ const columns = columnHelper.columns([
 ])
 
 const initialColumnSizing = {
-  red: 150,
-  green: 100,
-  blue: 50,
+  color: 160,
+  red: 80,
+  green: 40,
+  blue: 20,
 }
 
 export function Table({ data }: { data: Color[] }) {
+  const [fullWidth, setFullWidth] = useState(false)
+  const [tableFixed, setTableFixed] = useState(false)
+
   const table = useTable({
     features,
     columns,
@@ -73,10 +77,10 @@ export function Table({ data }: { data: Color[] }) {
 
   const handleAdjustColumnSizing = () => {
     table.setColumnSizing({
-      color: 200,
-      red: 100,
-      green: 200,
-      blue: 100,
+      color: 20,
+      red: 40,
+      green: 80,
+      blue: 160,
     })
   }
 
@@ -89,14 +93,18 @@ export function Table({ data }: { data: Color[] }) {
 
   return (
     <Card title="Column Sizing" description="Column Sizing with useTable and tableFeatures">
-      <div className="flex-1">
-        <TableComponent>
+      <div className="min-w-30 flex-1 overflow-auto">
+        <WidthAdaptiveTable
+          fullWidth={fullWidth}
+          tableFixed={tableFixed}
+          width={table.getTotalSize()}
+        >
           <TableHead headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (
               <TableHeaderRow headers={headerGroup.headers}>
                 {(header) => (
                   <TableHeaderCell
-                    className="w-(--header-cell-size)"
+                    className="w-(--header-cell-size) truncate"
                     style={
                       {
                         '--header-cell-size': `${header.getSize()}px`,
@@ -115,7 +123,7 @@ export function Table({ data }: { data: Color[] }) {
               <TableRow cells={row.getAllCells()}>
                 {(cell) => (
                   <TableCell
-                    className="w-(--header-cell-size)"
+                    className="w-(--header-cell-size) truncate"
                     style={
                       {
                         '--header-cell-size': `${cell.column.getSize()}px`,
@@ -128,20 +136,54 @@ export function Table({ data }: { data: Color[] }) {
               </TableRow>
             )}
           </TableBody>
-        </TableComponent>
+        </WidthAdaptiveTable>
       </div>
 
       <div className="flex h-full w-50 shrink-0 flex-col gap-0 border border-slate-400 bg-slate-100">
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
+          <Button onClick={() => setFullWidth((prev) => !prev)}>
+            {fullWidth ? 'Disable' : 'Enable'} Full Width
+          </Button>
+          <Button onClick={() => setTableFixed((prev) => !prev)}>
+            {tableFixed ? 'Disable' : 'Enable'} Table Fixed
+          </Button>
           <Button onClick={handleResetColumnSizing}>Reset</Button>
           <Button onClick={handleResetInitialColumnSizing}>Reset Initial</Button>
           <Button onClick={handleAdjustColumnSizing}>Adjust</Button>
         </div>
+        <pre className="m-0 overflow-auto p-2 text-xs">
+          table width: {fullWidth ? '100%' : `${table.getTotalSize()}px`}
+        </pre>
+        <pre className="m-0 overflow-auto p-2 text-xs">
+          table fixed: {tableFixed ? 'enabled' : 'disabled'}
+        </pre>
         <pre className="m-0 overflow-auto p-2 text-xs">{JSON.stringify(table.state, null, 2)}</pre>
         <pre className="m-0 overflow-auto p-2 text-xs">
           getTotalSize(): {JSON.stringify(table.getTotalSize(), null, 2)}
         </pre>
       </div>
     </Card>
+  )
+}
+
+function WidthAdaptiveTable({
+  children,
+  fullWidth,
+  tableFixed,
+  width,
+}: {
+  children: React.ReactNode
+  fullWidth: boolean
+  tableFixed: boolean
+  width: number
+}) {
+  return (
+    <TableComponent
+      className={`${tableFixed ? 'table-fixed' : ''} ${!fullWidth ? 'w-(--table-width)' : ''}`}
+      style={{ '--table-width': `${width}px` } as React.CSSProperties}
+      fullWidth={fullWidth}
+    >
+      {children}
+    </TableComponent>
   )
 }

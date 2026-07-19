@@ -11,10 +11,22 @@ import type {
 } from '@tanstack/react-table'
 import { SortAscIcon, SortDescIcon } from 'lucide-react'
 
-export function Table({ children }: { children: React.ReactNode }) {
+export function Table({
+  children,
+  className,
+  style,
+  fullWidth = true,
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+  fullWidth?: boolean
+}) {
   return (
     <div className="h-full w-full overflow-auto rounded border bg-white text-black">
-      <table className="w-full text-sm">{children}</table>
+      <table className={`text-sm ${className ?? ''} ${fullWidth ? 'w-full' : ''}`} style={style}>
+        {children}
+      </table>
     </div>
   )
 }
