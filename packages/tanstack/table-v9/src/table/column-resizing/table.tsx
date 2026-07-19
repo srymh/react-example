@@ -211,7 +211,7 @@ function ColumnResizingTableHeaderCell({
       {children}
       <button
         type="button"
-        className="absolute top-0 right-0 bottom-0 w-2 cursor-grab bg-black/20 hover:bg-black/40 active:cursor-grabbing"
+        className="absolute top-0 right-0 bottom-0 w-0.5 cursor-col-resize hover:bg-black active:bg-black"
         onMouseDown={onResize}
       ></button>
     </TableHeaderCell>
