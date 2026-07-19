@@ -2,6 +2,7 @@ import { createData } from './data/color'
 import { Table as BasicTable } from './table/basic/table'
 import { Table as ColumnOrderingDndTable } from './table/column-ordering-dnd/table'
 import { Table as ColumnOrderingTable } from './table/column-ordering/table'
+import { Table as ColumnResizingTable } from './table/column-resizing/table'
 import { Table as ColumnSizingTable } from './table/column-sizing/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
@@ -18,6 +19,7 @@ export function App() {
       <ColumnOrderingTable data={data} />
       <ColumnOrderingDndTable data={data} />
       <ColumnSizingTable data={data} />
+      <ColumnResizingTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
       <ContextTable data={data} />
