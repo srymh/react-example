@@ -302,6 +302,12 @@ importers:
 
   packages/tanstack/table-v9:
     dependencies:
+      '@dnd-kit/abstract':
+        specifier: ^0.5.0
+        version: 0.5.0
+      '@dnd-kit/dom':
+        specifier: ^0.5.0
+        version: 0.5.0
       '@dnd-kit/react':
         specifier: ^0.5.0
         version: 0.5.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)

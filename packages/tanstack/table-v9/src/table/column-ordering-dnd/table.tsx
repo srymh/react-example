@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { RestrictToHorizontalAxis } from '@dnd-kit/abstract/modifiers'
 import { DragDropProvider } from '@dnd-kit/react'
 import { isSortable, useSortable } from '@dnd-kit/react/sortable'
 import {
@@ -52,7 +53,11 @@ function SortableTableHeaderCell({
   columnId: string
   index: number
 }) {
-  const { ref, handleRef } = useSortable({ id: columnId, index })
+  const { ref, handleRef } = useSortable({
+    id: columnId,
+    index,
+    modifiers: [RestrictToHorizontalAxis],
+  })
   return (
     <TableHeaderCell ref={ref} className="relative">
       {children}
