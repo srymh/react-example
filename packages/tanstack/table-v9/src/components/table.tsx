@@ -56,14 +56,16 @@ export function TableHeaderRow<TFeatures extends TableFeatures, TData extends Ro
 export function TableHeaderCell({
   children,
   className,
+  style,
   ref,
 }: {
   children: React.ReactNode
   className?: string
+  style?: React.CSSProperties
   ref?: React.Ref<HTMLTableCellElement>
 }) {
   return (
-    <th className={`border px-1 py-0 ${className ?? ''}`} ref={ref}>
+    <th className={`border px-1 py-0 ${className ?? ''}`} style={style} ref={ref}>
       {children}
     </th>
   )
@@ -110,6 +112,18 @@ export function TableRow<TFeatures extends TableFeatures, TData extends RowData>
   )
 }
 
-export function TableCell({ children }: { children: React.ReactNode }) {
-  return <td className="border px-1 py-0">{children}</td>
+export function TableCell({
+  children,
+  className,
+  style,
+}: {
+  children: React.ReactNode
+  className?: string
+  style?: React.CSSProperties
+}) {
+  return (
+    <td className={`border px-1 py-0 ${className ?? ''}`} style={style}>
+      {children}
+    </td>
+  )
 }
