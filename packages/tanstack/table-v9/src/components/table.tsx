@@ -39,22 +39,34 @@ export function TableHeaderRow<TFeatures extends TableFeatures, TData extends Ro
   children,
   headers,
 }: {
-  children: (header: Header<TFeatures, TData>) => React.ReactNode
+  children: (header: Header<TFeatures, TData>, index: number) => React.ReactNode
   headers: Array<Header<TFeatures, TData>>
 }) {
   return (
     <tr className="">
-      {headers.map((header) =>
+      {headers.map((header, index) =>
         header.isPlaceholder ? null : (
-          <React.Fragment key={header.id}>{children(header)}</React.Fragment>
+          <React.Fragment key={header.id}>{children(header, index)}</React.Fragment>
         ),
       )}
     </tr>
   )
 }
 
-export function TableHeaderCell({ children }: { children: React.ReactNode }) {
-  return <th className="border px-1 py-0">{children}</th>
+export function TableHeaderCell({
+  children,
+  className,
+  ref,
+}: {
+  children: React.ReactNode
+  className?: string
+  ref?: React.Ref<HTMLTableCellElement>
+}) {
+  return (
+    <th className={`border px-1 py-0 ${className ?? ''}`} ref={ref}>
+      {children}
+    </th>
+  )
 }
 
 export function TableHeaderSortIcon({ isSorted }: { isSorted: false | SortDirection }) {

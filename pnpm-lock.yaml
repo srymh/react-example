@@ -302,6 +302,9 @@ importers:
 
   packages/tanstack/table-v9:
     dependencies:
+      '@dnd-kit/react':
+        specifier: ^0.5.0
+        version: 0.5.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@tailwindcss/vite':
         specifier: ^4.3.2
         version: 4.3.2(vite@8.1.3(@types/node@24.13.3)(jiti@2.7.0))

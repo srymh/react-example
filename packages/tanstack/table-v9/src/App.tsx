@@ -1,5 +1,6 @@
 import { createData } from './data/color'
 import { Table as BasicTable } from './table/basic/table'
+import { Table as ColumnOrderingDndTable } from './table/column-ordering-dnd/table'
 import { Table as ColumnOrderingTable } from './table/column-ordering/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
@@ -14,6 +15,7 @@ export function App() {
       <BasicTable data={data} />
       <SortTable data={data} />
       <ColumnOrderingTable data={data} />
+      <ColumnOrderingDndTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
       <ContextTable data={data} />
