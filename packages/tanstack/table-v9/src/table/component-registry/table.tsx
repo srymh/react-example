@@ -60,7 +60,7 @@ export function Table({ data }: { data: Color[] }) {
 
   return (
     <Card title="Component Registry">
-      <div className="flex-1">
+      <div className="min-w-30 flex-1 overflow-auto">
         <table.AppTable>
           <TableComponent>
             <TableHead headerGroups={table.getHeaderGroups()}>

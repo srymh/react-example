@@ -65,7 +65,7 @@ export function Table({ data }: { data: Color[] }) {
       title="Composable Table"
       description="createTableHook creates an app-specific table factory. Use it to define shared features, row models, and default table options once, then create each React table with the columns and data that are unique to that table."
     >
-      <div className="flex-1">
+      <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent>
           <TableHead headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (

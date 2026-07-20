@@ -105,7 +105,7 @@ export function Table({ data }: { data: Color[] }) {
       title="Column Ordering with Drag and Drop"
       description="Column ordering with useTable and tableFeatures"
     >
-      <div className="flex-1">
+      <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent>
           <DragDropProvider
             onDragEnd={(event) => {

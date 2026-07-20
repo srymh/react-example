@@ -73,7 +73,7 @@ export function Table({ data }: { data: Color[] }) {
 
   return (
     <Card title="Column Ordering" description="Column Ordering with useTable and tableFeatures">
-      <div className="flex-1">
+      <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent>
           <TableHead headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (
