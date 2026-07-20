@@ -4,6 +4,7 @@ import { Table as ColumnOrderingDndTable } from './table/column-ordering-dnd/tab
 import { Table as ColumnOrderingTable } from './table/column-ordering/table'
 import { Table as ColumnResizingTable } from './table/column-resizing/table'
 import { Table as ColumnSizingTable } from './table/column-sizing/table'
+import { Table as ColumnVisibilityTable } from './table/column-visibility/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
 import { Table as ContextTable } from './table/context/table'
@@ -20,6 +21,7 @@ export function App() {
       <ColumnOrderingDndTable data={data} />
       <ColumnSizingTable data={data} />
       <ColumnResizingTable data={data} />
+      <ColumnVisibilityTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
       <ContextTable data={data} />
