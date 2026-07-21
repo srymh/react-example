@@ -8,7 +8,7 @@ import {
   createFilteredRowModel,
   filterFn_inNumberRange,
 } from '@tanstack/react-table'
-import type { ColumnFiltersState } from '@tanstack/react-table'
+import type { Column, ColumnFiltersState, Updater } from '@tanstack/react-table'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
@@ -68,6 +68,7 @@ export function Table({ data }: { data: Color[] }) {
   const handleResetColumnFilters = () => {
     table.resetColumnFilters(true)
   }
+
   /**
    * Reset to `"columnFilters": initialColumnFilters`
    */
@@ -104,6 +105,7 @@ export function Table({ data }: { data: Color[] }) {
                 {(header) => (
                   <TableHeaderCell>
                     <table.FlexRender header={header} />
+                    {header.column.getCanFilter() && <Filter column={header.column} />}
                   </TableHeaderCell>
                 )}
               </TableHeaderRow>
@@ -133,5 +135,48 @@ export function Table({ data }: { data: Color[] }) {
         <pre className="m-0 overflow-auto p-2 text-xs">{JSON.stringify(table.state, null, 2)}</pre>
       </div>
     </Card>
+  )
+}
+
+function Filter({ column }: { column: Column<typeof features, Color, unknown> }) {
+  return (
+    <NumberRangeFilter
+      filterValue={column.getFilterValue() as [number, number] | undefined}
+      setFilterValue={column.setFilterValue.bind(column)}
+    />
+  )
+}
+
+function NumberRangeFilter({
+  filterValue,
+  setFilterValue,
+}: {
+  filterValue: [number | undefined, number | undefined] | undefined
+  setFilterValue: (updater: Updater<[number | undefined, number | undefined] | undefined>) => void
+}) {
+  const min = filterValue?.[0] ?? ''
+  const max = filterValue?.[1] ?? ''
+
+  return (
+    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
+      <input
+        type="number"
+        placeholder="min"
+        value={min}
+        onChange={(e) =>
+          setFilterValue((old) => [e.target.value ? Number(e.target.value) : undefined, old?.[1]])
+        }
+        className="w-16 border border-slate-400 px-1 py-0 text-xs"
+      />
+      <input
+        type="number"
+        placeholder="max"
+        value={max}
+        onChange={(e) =>
+          setFilterValue((old) => [old?.[0], e.target.value ? Number(e.target.value) : undefined])
+        }
+        className="w-16 border border-slate-400 px-1 py-0 text-xs"
+      />
+    </div>
   )
 }
