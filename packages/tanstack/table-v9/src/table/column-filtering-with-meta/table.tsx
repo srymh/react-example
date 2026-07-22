@@ -16,6 +16,10 @@ import { Button } from '../../components/button'
 import { Card } from '../../components/card'
 import { ColorCell } from '../../components/color-cell'
 import {
+  NumberEqualsFilterForUnsafeValue,
+  NumberRangeFilterForUnsafeValue,
+} from '../../components/filter'
+import {
   Table as TableComponent,
   TableCell,
   TableHeaderCell,
@@ -111,7 +115,7 @@ export function Table({ data }: { data: Color[] }) {
       if (greenFilterIndex !== -1) {
         newFilters.splice(greenFilterIndex, 1)
       }
-      newFilters.push({ id: 'green', value: [100, 150] })
+      newFilters.push({ id: 'green', value: 50 })
       return newFilters
     })
   }
@@ -171,7 +175,7 @@ export function Table({ data }: { data: Color[] }) {
 
 function Filter({ column }: { column: Column<typeof features, Color, unknown> }) {
   const filterVariant = column.columnDef.meta?.filterVariant
-  const value = column.getFilterValue() as [number, number] | undefined
+  const value = column.getFilterValue()
   const handleChangeValue = (updater: Updater<unknown>) => {
     column.setFilterValue(updater)
   }
@@ -184,136 +188,4 @@ function Filter({ column }: { column: Column<typeof features, Color, unknown> })
     default:
       return <></>
   }
-}
-
-function NumberRangeFilterForUnsafeValue({
-  value,
-  onChangeValue,
-}: {
-  value: unknown
-  onChangeValue: (updater: Updater<unknown>) => void
-}) {
-  const val = value as [number, number] | undefined
-  const min = val?.[0]
-  const max = val?.[1]
-
-  const handleChangeMin = (newMin: number | undefined) => {
-    onChangeValue((old: [number, number] | undefined) => {
-      const newMax = old?.[1]
-      if (newMin !== undefined || newMax !== undefined) {
-        return [newMin, newMax]
-      } else {
-        return undefined
-      }
-    })
-  }
-
-  const handleChangeMax = (newMax: number | undefined) => {
-    onChangeValue((old: [number, number] | undefined) => {
-      const newMin = old?.[0]
-      if (newMin !== undefined || newMax !== undefined) {
-        return [newMin, newMax]
-      } else {
-        return undefined
-      }
-    })
-  }
-
-  return (
-    <NumberRangeFilter
-      min={min}
-      max={max}
-      onChangeMin={handleChangeMin}
-      onChangeMax={handleChangeMax}
-    />
-  )
-}
-
-function NumberRangeFilter({
-  min,
-  max,
-  onChangeMin,
-  onChangeMax,
-}: {
-  min: number | undefined
-  max: number | undefined
-  onChangeMin: (value: number | undefined) => void
-  onChangeMax: (value: number | undefined) => void
-}) {
-  const minValue = min ?? ''
-  const maxValue = max ?? ''
-
-  const handleChangeMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMin = e.target.value ? Number(e.target.value) : undefined
-    onChangeMin(newMin)
-  }
-
-  const handleChangeMax = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMax = e.target.value ? Number(e.target.value) : undefined
-    onChangeMax(newMax)
-  }
-
-  return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
-      <input
-        type="number"
-        placeholder="min"
-        // value に undefined を入力してしまうと、
-        // Controlled コンポーネントとして動作しなくなるため、空文字として入力する
-        // https://react.dev/link/controlled-components
-        value={minValue}
-        onChange={handleChangeMin}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
-      />
-      <input
-        type="number"
-        placeholder="max"
-        value={maxValue}
-        onChange={handleChangeMax}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
-      />
-    </div>
-  )
-}
-
-function NumberEqualsFilterForUnsafeValue({
-  value,
-  onChangeValue,
-}: {
-  value: unknown
-  onChangeValue: (updater: Updater<unknown>) => void
-}) {
-  if (!(typeof value === 'number' || value === undefined)) {
-    return <></>
-  }
-
-  return <NumberEqualsFilter value={value} onChangeValue={onChangeValue} />
-}
-
-function NumberEqualsFilter({
-  value,
-  onChangeValue,
-}: {
-  value: number | undefined
-  onChangeValue: (value: number | undefined) => void
-}) {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value ? Number(e.target.value) : undefined
-    onChangeValue(newValue)
-  }
-
-  return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
-      <input
-        type="number"
-        placeholder="equals"
-        // value に undefined を入力してしまうと、
-        // Controlled コンポーネントとして動作しなくなるため、空文字として入力する
-        // https://react.dev/link/controlled-components
-        value={value ?? ''}
-        onChange={handleChange}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
-      />
-    </div>
-  )
 }

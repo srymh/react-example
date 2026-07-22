@@ -8,11 +8,12 @@ import {
   createFilteredRowModel,
   filterFn_inNumberRange,
 } from '@tanstack/react-table'
-import type { Column, ColumnFiltersState } from '@tanstack/react-table'
+import type { Column, ColumnFiltersState, Updater } from '@tanstack/react-table'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
 import { ColorCell } from '../../components/color-cell'
+import { NumberRangeFilterForUnsafeValue } from '../../components/filter'
 import {
   Table as TableComponent,
   TableCell,
@@ -139,85 +140,10 @@ export function Table({ data }: { data: Color[] }) {
 }
 
 function Filter({ column }: { column: Column<typeof features, Color, unknown> }) {
-  const value = column.getFilterValue() as [number, number] | undefined
-  const min = value?.[0]
-  const max = value?.[1]
-
-  const handleChangeMin = (newMin: number | undefined) => {
-    column.setFilterValue((old: [number, number] | undefined) => {
-      const newMax = old?.[1]
-      if (newMin !== undefined || newMax !== undefined) {
-        return [newMin, newMax]
-      } else {
-        return undefined
-      }
-    })
+  const value = column.getFilterValue()
+  const handleChangeValue = (updater: Updater<unknown>) => {
+    column.setFilterValue(updater)
   }
 
-  const handleChangeMax = (newMax: number | undefined) => {
-    column.setFilterValue((old: [number, number] | undefined) => {
-      const newMin = old?.[0]
-      if (newMin !== undefined || newMax !== undefined) {
-        return [newMin, newMax]
-      } else {
-        return undefined
-      }
-    })
-  }
-
-  return (
-    <NumberRangeFilter
-      min={min}
-      max={max}
-      onChangeMin={handleChangeMin}
-      onChangeMax={handleChangeMax}
-    />
-  )
-}
-
-function NumberRangeFilter({
-  min,
-  max,
-  onChangeMin,
-  onChangeMax,
-}: {
-  min: number | undefined
-  max: number | undefined
-  onChangeMin: (value: number | undefined) => void
-  onChangeMax: (value: number | undefined) => void
-}) {
-  const minValue = min ?? ''
-  const maxValue = max ?? ''
-
-  const handleChangeMin = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMin = e.target.value ? Number(e.target.value) : undefined
-    onChangeMin(newMin)
-  }
-
-  const handleChangeMax = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newMax = e.target.value ? Number(e.target.value) : undefined
-    onChangeMax(newMax)
-  }
-
-  return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
-      <input
-        type="number"
-        placeholder="min"
-        // value に undefined を入力してしまうと、
-        // Controlled コンポーネントとして動作しなくなるため、空文字として入力する
-        // https://react.dev/link/controlled-components
-        value={minValue}
-        onChange={handleChangeMin}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
-      />
-      <input
-        type="number"
-        placeholder="max"
-        value={maxValue}
-        onChange={handleChangeMax}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
-      />
-    </div>
-  )
+  return <NumberRangeFilterForUnsafeValue value={value} onChangeValue={handleChangeValue} />
 }
