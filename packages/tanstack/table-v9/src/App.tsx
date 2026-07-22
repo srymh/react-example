@@ -10,6 +10,7 @@ import { Table as ColumnVisibilityTable } from './table/column-visibility/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
 import { Table as ContextTable } from './table/context/table'
+import { Table as GlobalFilteringTable } from './table/global-filtering/table'
 import { Table as SortTable } from './table/sort/table'
 
 const data = createData(100)
@@ -26,6 +27,7 @@ export function App() {
       <ColumnVisibilityTable data={data} />
       <ColumnFilteringTable data={data} />
       <ColumnFilteringWithMetaTable data={data} />
+      <GlobalFilteringTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
       <ContextTable data={data} />
