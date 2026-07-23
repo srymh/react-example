@@ -41,16 +41,6 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
-const initialColumnSizing = {
-  color: 160,
-  red: 120,
-  green: 80,
-  blue: 60,
-  hue: 40,
-  saturation: 30,
-  lightness: 20,
-}
-
 export function Table({ data }: { data: Color[] }) {
   const [fullWidth, setFullWidth] = useState(false)
   const [tableFixed, setTableFixed] = useState(false)
@@ -63,7 +53,15 @@ export function Table({ data }: { data: Color[] }) {
       size: 200, // default column size
     },
     initialState: {
-      columnSizing: initialColumnSizing,
+      columnSizing: {
+        color: 160,
+        red: 120,
+        green: 80,
+        blue: 60,
+        hue: 40,
+        saturation: 30,
+        lightness: 20,
+      },
     },
   })
 
@@ -75,7 +73,7 @@ export function Table({ data }: { data: Color[] }) {
   }
 
   /**
-   * Reset to `"columnSizing": initialColumnSizing`
+   * Reset to `"columnSizing": initialState.columnSizing`
    */
   const handleResetInitialColumnSizing = () => {
     table.resetColumnSizing()
@@ -84,9 +82,12 @@ export function Table({ data }: { data: Color[] }) {
   const handleAdjustColumnSizing = () => {
     table.setColumnSizing({
       color: 20,
-      red: 40,
-      green: 80,
-      blue: 160,
+      red: 30,
+      green: 40,
+      blue: 60,
+      hue: 80,
+      saturation: 120,
+      lightness: 160,
     })
   }
 

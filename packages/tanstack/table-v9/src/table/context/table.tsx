@@ -21,19 +21,21 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
-const initialSorting = [{ id: 'red', desc: true }]
-
 export function Table({ data }: { data: Color[] }) {
   const table = useAppTable({
     columns,
     data,
     initialState: {
-      sorting: initialSorting,
+      sorting: [{ id: 'red', desc: true }],
     },
   })
 
   const handleResetSorting = () => {
-    table.setSorting(initialSorting)
+    table.resetSorting(true)
+  }
+
+  const handleResetInitialSorting = () => {
+    table.resetSorting()
   }
 
   // Greenを昇順にソートする
@@ -97,7 +99,8 @@ export function Table({ data }: { data: Color[] }) {
 
       <div className="flex h-full w-50 shrink-0 flex-col gap-0 border border-slate-400 bg-slate-100">
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
-          <Button onClick={handleResetSorting}>Reset Sort</Button>
+          <Button onClick={handleResetSorting}>Reset</Button>
+          <Button onClick={handleResetInitialSorting}>Reset Initial</Button>
           <Button onClick={handleSortGreenAsc}>
             <span className="flex items-center">
               Green Asc

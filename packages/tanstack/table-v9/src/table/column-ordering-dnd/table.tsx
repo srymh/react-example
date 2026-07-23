@@ -25,6 +25,8 @@ import {
 } from '../../components/table'
 import type { Color } from '../../data/color'
 
+type DragDropProviderProps = React.ComponentProps<typeof DragDropProvider>
+
 const features = tableFeatures({
   columnOrderingFeature,
 })
@@ -45,45 +47,21 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
-const initialColumnOrder = ['red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'color']
-
-function SortableTableHeaderCell({
-  children,
-  columnId,
-  index,
-}: {
-  children: React.ReactNode
-  columnId: string
-  index: number
-}) {
-  const { ref, handleRef } = useSortable({
-    id: columnId,
-    index,
-    modifiers: [RestrictToHorizontalAxis],
-  })
-  return (
-    <TableHeaderCell ref={ref} className="relative">
-      {children}
-      <button
-        type="button"
-        className="absolute top-0 right-0 left-0 h-2 w-full cursor-grab bg-black/20 hover:bg-black/40 active:cursor-grabbing"
-        ref={handleRef}
-      ></button>
-    </TableHeaderCell>
-  )
-}
-
 export function Table({ data }: { data: Color[] }) {
   const table = useTable({
     features,
     columns,
     data,
     initialState: {
-      columnOrder: initialColumnOrder,
+      columnOrder: ['red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'color'],
     },
   })
 
-  const handleResetColumnOrder = () => {
+  // const handleResetColumnOrder = () => {
+  //   table.resetColumnOrder(true)
+  // }
+
+  const handleResetInitialColumnOrder = () => {
     table.resetColumnOrder()
   }
 
@@ -91,8 +69,15 @@ export function Table({ data }: { data: Color[] }) {
     table.setColumnOrder((prev) => {
       const newOrder = [...prev]
       const first = newOrder.shift()
-      newOrder.push(first!)
-      return newOrder
+      if (first) {
+        newOrder.push(first!)
+        return newOrder
+      } else {
+        // To shift, we need the id, but `table.state.columnOrder` returns `[]`, so I don't know
+        // how to get the initial column order from the table instance.
+        // For now, I'm returning `prev`.
+        return prev
+      }
     })
   }
 
@@ -103,6 +88,37 @@ export function Table({ data }: { data: Color[] }) {
     return () => unsubscribe()
   }, [table])
 
+  const handleDragEnd: DragDropProviderProps['onDragEnd'] = (event) => {
+    if (event.canceled) {
+      return
+    }
+
+    const { source } = event.operation
+
+    if (!isSortable(source)) {
+      return
+    }
+
+    const { initialIndex, index } = source
+
+    if (initialIndex === index) {
+      return
+    }
+
+    table.setColumnOrder((prev) => {
+      const newOrder = [...prev]
+      const [movedColumn] = newOrder.splice(initialIndex, 1)
+
+      if (movedColumn == null) {
+        return prev
+      }
+
+      newOrder.splice(index, 0, movedColumn)
+
+      return newOrder
+    })
+  }
+
   return (
     <Card
       title="Column Ordering with Drag and Drop"
@@ -110,38 +126,7 @@ export function Table({ data }: { data: Color[] }) {
     >
       <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent>
-          <DragDropProvider
-            onDragEnd={(event) => {
-              if (event.canceled) {
-                return
-              }
-
-              const { source } = event.operation
-
-              if (!isSortable(source)) {
-                return
-              }
-
-              const { initialIndex, index } = source
-
-              if (initialIndex === index) {
-                return
-              }
-
-              table.setColumnOrder((prev) => {
-                const newOrder = [...prev]
-                const [movedColumn] = newOrder.splice(initialIndex, 1)
-
-                if (movedColumn == null) {
-                  return prev
-                }
-
-                newOrder.splice(index, 0, movedColumn)
-
-                return newOrder
-              })
-            }}
-          >
+          <DragDropProvider onDragEnd={handleDragEnd}>
             <TableHead headerGroups={table.getHeaderGroups()}>
               {(headerGroup) => (
                 <TableHeaderRow headers={headerGroup.headers}>
@@ -171,7 +156,8 @@ export function Table({ data }: { data: Color[] }) {
 
       <div className="flex h-full w-50 shrink-0 flex-col gap-0 border border-slate-400 bg-slate-100">
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
-          <Button onClick={handleResetColumnOrder}>Reset Column Order</Button>
+          {/* <Button onClick={handleResetColumnOrder}>Reset</Button> */}
+          <Button onClick={handleResetInitialColumnOrder}>Reset Initial</Button>
           <Button onClick={handleShiftColumnOrder}>
             <span className="flex items-center">
               Shift Column Order
@@ -182,5 +168,31 @@ export function Table({ data }: { data: Color[] }) {
         <pre className="m-0 overflow-auto p-2 text-xs">{JSON.stringify(table.state, null, 2)}</pre>
       </div>
     </Card>
+  )
+}
+
+function SortableTableHeaderCell({
+  children,
+  columnId,
+  index,
+}: {
+  children: React.ReactNode
+  columnId: string
+  index: number
+}) {
+  const { ref, handleRef } = useSortable({
+    id: columnId,
+    index,
+    modifiers: [RestrictToHorizontalAxis],
+  })
+  return (
+    <TableHeaderCell ref={ref} className="relative">
+      {children}
+      <button
+        type="button"
+        className="absolute top-0 right-0 left-0 h-2 w-full cursor-grab bg-black/20 hover:bg-black/40 active:cursor-grabbing"
+        ref={handleRef}
+      ></button>
+    </TableHeaderCell>
   )
 }

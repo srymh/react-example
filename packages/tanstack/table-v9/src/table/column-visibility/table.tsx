@@ -41,23 +41,21 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
-const initialColumnVisibility = {
-  color: false,
-  red: true,
-  green: true,
-  blue: true,
-  hue: true,
-  saturation: true,
-  lightness: true,
-}
-
 export function Table({ data }: { data: Color[] }) {
   const table = useTable({
     features,
     columns,
     data,
     initialState: {
-      columnVisibility: initialColumnVisibility,
+      columnVisibility: {
+        color: false,
+        red: true,
+        green: true,
+        blue: true,
+        hue: true,
+        saturation: true,
+        lightness: true,
+      },
     },
   })
 
@@ -69,7 +67,7 @@ export function Table({ data }: { data: Color[] }) {
   }
 
   /**
-   * Reset to `"columnVisibility": initialColumnVisibility`
+   * Reset to `"columnVisibility": initialState.columnVisibility`
    */
   const handleResetInitialColumnVisibility = () => {
     table.resetColumnVisibility()

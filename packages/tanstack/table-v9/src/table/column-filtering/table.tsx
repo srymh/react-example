@@ -8,7 +8,7 @@ import {
   createFilteredRowModel,
   filterFn_inNumberRange,
 } from '@tanstack/react-table'
-import type { Column, ColumnFiltersState, Updater } from '@tanstack/react-table'
+import type { Column, Updater } from '@tanstack/react-table'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
@@ -49,20 +49,13 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness', filterFn: 'inNumberRange' }),
 ])
 
-const initialColumnFilters: ColumnFiltersState = [
-  {
-    id: 'red',
-    value: [100, 150],
-  },
-]
-
 export function Table({ data }: { data: Color[] }) {
   const table = useTable({
     features,
     columns,
     data,
     initialState: {
-      columnFilters: initialColumnFilters,
+      columnFilters: [{ id: 'red', value: [100, 150] }],
     },
   })
 
@@ -74,7 +67,7 @@ export function Table({ data }: { data: Color[] }) {
   }
 
   /**
-   * Reset to `"columnFilters": initialColumnFilters`
+   * Reset to `"columnFilters": initialState.columnFilters`
    */
   const handleResetInitialColumnFilters = () => {
     table.resetColumnFilters()

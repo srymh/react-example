@@ -50,15 +50,13 @@ const columns = columnHelper.columns([
   columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
-const initialGlobalFilter = [200, 255]
-
 export function Table({ data }: { data: Color[] }) {
   const table = useTable({
     features,
     columns,
     data,
     initialState: {
-      globalFilter: initialGlobalFilter,
+      globalFilter: [200, 255],
     },
     globalFilterFn: 'inNumberRange',
   })
@@ -71,7 +69,7 @@ export function Table({ data }: { data: Color[] }) {
   }
 
   /**
-   * Reset to `"globalFilter": initialGlobalFilter`
+   * Reset to `"globalFilter": initialState.globalFilter`
    */
   const handleResetInitialGlobalFilter = () => {
     table.resetGlobalFilter()
