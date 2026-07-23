@@ -1,5 +1,6 @@
 import { createData } from './data/color'
 import { Table as BasicTable } from './table/basic/table'
+import { Table as ColumnFacetingTable } from './table/column-faceting/table'
 import { Table as ColumnFilteringWithMetaTable } from './table/column-filtering-with-meta/table'
 import { Table as ColumnFilteringTable } from './table/column-filtering/table'
 import { Table as ColumnOrderingDndTable } from './table/column-ordering-dnd/table'
@@ -27,6 +28,7 @@ export function App() {
       <ColumnVisibilityTable data={data} />
       <ColumnFilteringTable data={data} />
       <ColumnFilteringWithMetaTable data={data} />
+      <ColumnFacetingTable data={data} />
       <GlobalFilteringTable data={data} />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />

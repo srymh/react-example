@@ -3,9 +3,13 @@ export type Updater<T> = T | ((old: T) => T)
 export function NumberRangeFilterForUnsafeValue({
   value,
   onChangeValue,
+  min: limitedMin,
+  max: limitedMax,
 }: {
   value: unknown
   onChangeValue: (updater: Updater<unknown>) => void
+  min?: number
+  max?: number
 }) {
   const val = value as [number, number] | undefined
   const min = val?.[0]
@@ -13,8 +17,20 @@ export function NumberRangeFilterForUnsafeValue({
 
   const handleChangeMin = (newMin: number | undefined) => {
     onChangeValue((old: [number, number] | undefined) => {
-      const newMax = old?.[1]
+      let newMax = old?.[1]
       if (newMin !== undefined || newMax !== undefined) {
+        if (limitedMin !== undefined && newMin !== undefined && newMin < limitedMin) {
+          newMin = limitedMin
+        }
+        if (limitedMax !== undefined && newMin !== undefined && newMin > limitedMax) {
+          newMin = limitedMax
+        }
+        if (limitedMax !== undefined && newMax !== undefined && newMax > limitedMax) {
+          newMax = limitedMax
+        }
+        if (limitedMin !== undefined && newMax !== undefined && newMax < limitedMin) {
+          newMax = limitedMin
+        }
         return [newMin, newMax]
       } else {
         return undefined
@@ -24,8 +40,20 @@ export function NumberRangeFilterForUnsafeValue({
 
   const handleChangeMax = (newMax: number | undefined) => {
     onChangeValue((old: [number, number] | undefined) => {
-      const newMin = old?.[0]
+      let newMin = old?.[0]
       if (newMin !== undefined || newMax !== undefined) {
+        if (limitedMin !== undefined && newMin !== undefined && newMin < limitedMin) {
+          newMin = limitedMin
+        }
+        if (limitedMax !== undefined && newMin !== undefined && newMin > limitedMax) {
+          newMin = limitedMax
+        }
+        if (limitedMax !== undefined && newMax !== undefined && newMax > limitedMax) {
+          newMax = limitedMax
+        }
+        if (limitedMin !== undefined && newMax !== undefined && newMax < limitedMin) {
+          newMax = limitedMin
+        }
         return [newMin, newMax]
       } else {
         return undefined
