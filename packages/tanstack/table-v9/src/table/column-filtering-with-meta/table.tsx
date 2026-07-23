@@ -75,6 +75,27 @@ const columns = columnHelper.columns([
       filterVariant: 'number-range',
     },
   }),
+  columnHelper.accessor('hue', {
+    header: 'Hue',
+    filterFn: 'inNumberRange',
+    meta: {
+      filterVariant: 'number-range',
+    },
+  }),
+  columnHelper.accessor('saturation', {
+    header: 'Saturation',
+    filterFn: 'inNumberRange',
+    meta: {
+      filterVariant: 'number-range',
+    },
+  }),
+  columnHelper.accessor('lightness', {
+    header: 'Lightness',
+    filterFn: 'inNumberRange',
+    meta: {
+      filterVariant: 'number-range',
+    },
+  }),
 ])
 
 const initialColumnFilters: ColumnFiltersState = [

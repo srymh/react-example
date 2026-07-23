@@ -44,6 +44,9 @@ const columns = columnHelper.columns([
   columnHelper.accessor('red', { header: 'Red', filterFn: 'inNumberRange' }),
   columnHelper.accessor('green', { header: 'Green', filterFn: 'inNumberRange' }),
   columnHelper.accessor('blue', { header: 'Blue', filterFn: 'inNumberRange' }),
+  columnHelper.accessor('hue', { header: 'Hue', filterFn: 'inNumberRange' }),
+  columnHelper.accessor('saturation', { header: 'Saturation', filterFn: 'inNumberRange' }),
+  columnHelper.accessor('lightness', { header: 'Lightness', filterFn: 'inNumberRange' }),
 ])
 
 const initialColumnFilters: ColumnFiltersState = [

@@ -25,6 +25,9 @@ const columns = columnHelper.columns([
   columnHelper.accessor('red', { header: 'Red' }),
   columnHelper.accessor('green', { header: 'Green' }),
   columnHelper.accessor('blue', { header: 'Blue' }),
+  columnHelper.accessor('hue', { header: 'Hue' }),
+  columnHelper.accessor('saturation', { header: 'Saturation' }),
+  columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
 const initialSorting = [{ id: 'red', desc: true }]

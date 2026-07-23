@@ -36,6 +36,9 @@ const columns = columnHelper.columns([
   columnHelper.accessor('red', { header: 'Red' }),
   columnHelper.accessor('green', { header: 'Green' }),
   columnHelper.accessor('blue', { header: 'Blue' }),
+  columnHelper.accessor('hue', { header: 'Hue' }),
+  columnHelper.accessor('saturation', { header: 'Saturation' }),
+  columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
 const initialColumnVisibility = {
@@ -43,6 +46,9 @@ const initialColumnVisibility = {
   red: true,
   green: true,
   blue: true,
+  hue: true,
+  saturation: true,
+  lightness: true,
 }
 
 export function Table({ data }: { data: Color[] }) {

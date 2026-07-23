@@ -38,13 +38,19 @@ const columns = columnHelper.columns([
   columnHelper.accessor('red', { header: 'Red' }),
   columnHelper.accessor('green', { header: 'Green' }),
   columnHelper.accessor('blue', { header: 'Blue' }),
+  columnHelper.accessor('hue', { header: 'Hue' }),
+  columnHelper.accessor('saturation', { header: 'Saturation' }),
+  columnHelper.accessor('lightness', { header: 'Lightness' }),
 ])
 
 const initialColumnSizing = {
   color: 160,
-  red: 80,
-  green: 40,
-  blue: 20,
+  red: 120,
+  green: 80,
+  blue: 60,
+  hue: 40,
+  saturation: 30,
+  lightness: 20,
 }
 
 export function Table({ data }: { data: Color[] }) {
