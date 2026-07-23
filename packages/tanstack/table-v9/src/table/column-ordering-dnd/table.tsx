@@ -57,25 +57,30 @@ export function Table({ data }: { data: Color[] }) {
     },
   })
 
-  // const handleResetColumnOrder = () => {
-  //   table.resetColumnOrder(true)
-  // }
+  const handleResetColumnOrder = () => {
+    table.resetColumnOrder(true)
+  }
 
   const handleResetInitialColumnOrder = () => {
     table.resetColumnOrder()
   }
 
+  // `table.resetColumnOrder(true)` の実行直後のように、`table.state.columnOrder` は空になっていたり、
+  // また、すべてのカラムが含まれているとは限らないため、表示中のカラム順を取得するにはこの関数を使用する
+  const getDisplayingColumnOrder = () => {
+    return table.getAllLeafColumns().map((column) => column.id)
+  }
+
   const handleShiftColumnOrder = () => {
     table.setColumnOrder((prev) => {
-      const newOrder = [...prev]
+      const displayingColumnOrder = getDisplayingColumnOrder()
+      const newOrder =
+        prev.length === displayingColumnOrder.length ? [...prev] : displayingColumnOrder
       const first = newOrder.shift()
       if (first) {
-        newOrder.push(first!)
+        newOrder.push(first)
         return newOrder
       } else {
-        // To shift, we need the id, but `table.state.columnOrder` returns `[]`, so I don't know
-        // how to get the initial column order from the table instance.
-        // For now, I'm returning `prev`.
         return prev
       }
     })
@@ -106,7 +111,9 @@ export function Table({ data }: { data: Color[] }) {
     }
 
     table.setColumnOrder((prev) => {
-      const newOrder = [...prev]
+      const displayingColumnOrder = getDisplayingColumnOrder()
+      const newOrder =
+        prev.length === displayingColumnOrder.length ? [...prev] : displayingColumnOrder
       const [movedColumn] = newOrder.splice(initialIndex, 1)
 
       if (movedColumn == null) {
@@ -156,7 +163,7 @@ export function Table({ data }: { data: Color[] }) {
 
       <div className="flex h-full w-50 shrink-0 flex-col gap-0 border border-slate-400 bg-slate-100">
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
-          {/* <Button onClick={handleResetColumnOrder}>Reset</Button> */}
+          <Button onClick={handleResetColumnOrder}>Reset</Button>
           <Button onClick={handleResetInitialColumnOrder}>Reset Initial</Button>
           <Button onClick={handleShiftColumnOrder}>
             <span className="flex items-center">
