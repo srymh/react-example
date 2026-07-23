@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 
 import { RestrictToHorizontalAxis } from '@dnd-kit/abstract/modifiers'
+import { Feedback } from '@dnd-kit/dom'
 import { DragDropProvider } from '@dnd-kit/react'
 import { isSortable, useSortable } from '@dnd-kit/react/sortable'
 import {
@@ -9,7 +10,7 @@ import {
   createColumnHelper,
   columnOrderingFeature,
 } from '@tanstack/react-table'
-import { MoveLeftIcon } from 'lucide-react'
+import { MoveLeftIcon, GripHorizontalIcon } from 'lucide-react'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
@@ -98,15 +99,16 @@ export function Table({ data }: { data: Color[] }) {
       return
     }
 
-    const { source } = event.operation
+    const { source, target } = event.operation
 
-    if (!isSortable(source)) {
+    if (!isSortable(source) || !isSortable(target)) {
       return
     }
 
-    const { initialIndex, index } = source
+    const { index: sourceIndex } = source
+    const { index: targetIndex } = target
 
-    if (initialIndex === index) {
+    if (sourceIndex === targetIndex) {
       return
     }
 
@@ -114,13 +116,13 @@ export function Table({ data }: { data: Color[] }) {
       const displayingColumnOrder = getDisplayingColumnOrder()
       const newOrder =
         prev.length === displayingColumnOrder.length ? [...prev] : displayingColumnOrder
-      const [movedColumn] = newOrder.splice(initialIndex, 1)
+      const [movedColumn] = newOrder.splice(sourceIndex, 1)
 
       if (movedColumn == null) {
         return prev
       }
 
-      newOrder.splice(index, 0, movedColumn)
+      newOrder.splice(targetIndex, 0, movedColumn)
 
       return newOrder
     })
@@ -191,15 +193,21 @@ function SortableTableHeaderCell({
     id: columnId,
     index,
     modifiers: [RestrictToHorizontalAxis],
+    plugins: [Feedback.configure({ feedback: 'clone' })],
   })
   return (
-    <TableHeaderCell ref={ref} className="relative">
-      {children}
+    <TableHeaderCell
+      ref={ref}
+      className="group relative data-[dnd-dragging=true]:bg-white/70 data-[dnd-placeholder=clone]:opacity-50"
+    >
       <button
         type="button"
-        className="absolute top-0 right-0 left-0 h-2 w-full cursor-grab bg-black/20 hover:bg-black/40 active:cursor-grabbing"
+        className="absolute top-0 right-0 left-0 hidden h-2 w-full cursor-grab items-center justify-center group-hover:flex hover:bg-black/20 active:cursor-grabbing"
         ref={handleRef}
-      ></button>
+      >
+        <GripHorizontalIcon className="h-2 w-2 text-black/40" />
+      </button>
+      {children}
     </TableHeaderCell>
   )
 }
