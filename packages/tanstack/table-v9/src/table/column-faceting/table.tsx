@@ -36,15 +36,15 @@ type MyColumnMeta = {
   filterVariant?: 'number-range' | 'number-equals' | 'number-range-bucket'
 }
 
-type RangeBucket = 'under-20' | '20-40' | '40-60' | '60-80' | '80-100' | '100'
+type RangeBucket = 'under-20' | '[20, 40)' | '[40, 60)' | '[60, 80)' | '[80, 100)' | 'over-100'
 
 function getRangeBucket(value: number): RangeBucket {
   if (value < 20) return 'under-20'
-  if (value < 40) return '20-40'
-  if (value < 60) return '40-60'
-  if (value < 80) return '60-80'
-  if (value < 100) return '80-100'
-  return '100'
+  if (value < 40) return '[20, 40)'
+  if (value < 60) return '[40, 60)'
+  if (value < 80) return '[60, 80)'
+  if (value < 100) return '[80, 100)'
+  return 'over-100'
 }
 
 const rangeBucketFilter = constructFilterFn({
@@ -253,11 +253,11 @@ function Filter({ column }: { column: Column<typeof features, Color, unknown> })
     case 'number-range-bucket': {
       const suggestions = Array.from(column.getFacetedUniqueValues().entries()).sort(([a], [b]) => {
         const order: Record<RangeBucket, number> = {
-          '100': 0,
-          '80-100': 1,
-          '60-80': 2,
-          '40-60': 3,
-          '20-40': 4,
+          'over-100': 0,
+          '[80, 100)': 1,
+          '[60, 80)': 2,
+          '[40, 60)': 3,
+          '[20, 40)': 4,
           'under-20': 5,
         }
         return order[a as RangeBucket] - order[b as RangeBucket]
