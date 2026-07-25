@@ -11,22 +11,52 @@ import type {
 } from '@tanstack/react-table'
 import { SortAscIcon, SortDescIcon } from 'lucide-react'
 
+const controllerPlaceholderBackgroundClassName =
+  'bg-[repeating-linear-gradient(to_right,transparent,transparent_10px,#e5e7eb_10px,#e5e7eb_11px,transparent_11px,transparent_20px),repeating-linear-gradient(to_bottom,transparent,transparent_10px,#e5e7eb_10px,#e5e7eb_11px,transparent_11px,transparent_20px)]'
+
 export function Table({
   children,
   className,
   style,
   fullWidth = true,
+  renderTopController,
+  renderBottomController,
 }: {
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
   fullWidth?: boolean
+  renderTopController?: React.ReactNode
+  renderBottomController?: React.ReactNode
 }) {
   return (
-    <div className="h-full w-full overflow-auto rounded border bg-white text-black">
-      <table className={`text-sm ${className ?? ''} ${fullWidth ? 'w-full' : ''}`} style={style}>
-        {children}
-      </table>
+    <div className="flex h-full w-full flex-col overflow-hidden rounded border border-black bg-white text-black">
+      {renderTopController && (
+        <div
+          className={`w-full shrink-0 border-b border-black bg-gray-100 ${controllerPlaceholderBackgroundClassName}`}
+        >
+          {renderTopController}
+        </div>
+      )}
+
+      <div className="min-h-0 w-full min-w-0 flex-1 overflow-hidden bg-white">
+        <div className="flow-root h-[calc(100%+1px)] w-[calc(100%+1px)] overflow-auto overscroll-none bg-[repeating-linear-gradient(135deg,#f0f0f0,#f0f0f0_1px,transparent_1px,transparent_4px)]">
+          <table
+            className={`border-separate border-spacing-0 bg-white text-sm ${className ?? ''} ${fullWidth ? 'w-full' : ''}`}
+            style={style}
+          >
+            {children}
+          </table>
+        </div>
+      </div>
+
+      {renderBottomController && (
+        <div
+          className={`w-full shrink-0 border-t border-black bg-gray-100 ${controllerPlaceholderBackgroundClassName}`}
+        >
+          {renderBottomController}
+        </div>
+      )}
     </div>
   )
 }
@@ -77,7 +107,11 @@ export function TableHeaderCell({
   ref?: React.Ref<HTMLTableCellElement>
 }) {
   return (
-    <th className={`border px-1 py-0 ${className ?? ''}`} style={style} ref={ref}>
+    <th
+      className={`border-r border-b border-black px-1 py-0 ${className ?? ''}`}
+      style={style}
+      ref={ref}
+    >
       {children}
     </th>
   )
@@ -134,7 +168,7 @@ export function TableCell({
   style?: React.CSSProperties
 }) {
   return (
-    <td className={`border px-1 py-0 ${className ?? ''}`} style={style}>
+    <td className={`border-r border-b border-black px-1 py-0 ${className ?? ''}`} style={style}>
       {children}
     </td>
   )

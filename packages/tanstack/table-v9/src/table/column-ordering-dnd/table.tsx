@@ -198,7 +198,7 @@ function SortableTableHeaderCell({
   return (
     <TableHeaderCell
       ref={ref}
-      className="group relative data-[dnd-dragging=true]:bg-white/70 data-[dnd-placeholder=clone]:opacity-50"
+      className="group relative data-[dnd-dragging=true]:border-l data-[dnd-dragging=true]:bg-white/70 data-[dnd-placeholder=clone]:opacity-50"
     >
       <button
         type="button"
