@@ -108,7 +108,7 @@ export function TableHeaderCell({
 }) {
   return (
     <th
-      className={`border-r border-b border-black px-1 py-0 ${className ?? ''}`}
+      className={`sticky top-0 border-r border-b border-black bg-white px-1 py-0 ${className ?? ''}`}
       style={style}
       ref={ref}
     >
