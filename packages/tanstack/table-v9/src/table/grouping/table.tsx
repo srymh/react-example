@@ -30,7 +30,7 @@ import {
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
-import { ColorCell } from '../../components/color-cell'
+import { BlueCell, ColorCell, GreenCell, RedCell } from '../../components/color-cell'
 import {
   Table as TableComponent,
   TableCell,
@@ -40,6 +40,7 @@ import {
   TableHead,
   TableBody,
 } from '../../components/table'
+import { categorizeHue } from '../../data/color'
 import type { Color } from '../../data/color'
 
 const features = tableFeatures({
@@ -57,20 +58,7 @@ const columns = columnHelper.columns([
     header: 'Color',
     cell: (props) => <ColorCell {...props.row.original} />,
   }),
-  columnHelper.accessor(
-    ({ hue }) => {
-      // 色相である程度分ける. 赤っぽい色、青っぽい色など
-      if (hue < 15 || hue >= 345) return 'Red'
-      if (hue < 45) return 'Orange'
-      if (hue < 70) return 'Yellow'
-      if (hue < 165) return 'Green'
-      if (hue < 195) return 'Cyan'
-      if (hue < 255) return 'Blue'
-      if (hue < 345) return 'Purple'
-      return 'Red'
-    },
-    { id: 'hue-group', header: 'Hue Group' },
-  ),
+  columnHelper.accessor(({ hue }) => categorizeHue(hue), { id: 'hue-group', header: 'Hue Group' }),
   columnHelper.accessor(
     ({ saturation }) => {
       if (saturation < 20) return '[0-20)'
@@ -81,9 +69,18 @@ const columns = columnHelper.columns([
     },
     { id: 'saturation-group', header: 'Saturation Group' },
   ),
-  columnHelper.accessor('red', { header: 'Red' }),
-  columnHelper.accessor('green', { header: 'Green' }),
-  columnHelper.accessor('blue', { header: 'Blue' }),
+  columnHelper.accessor('red', {
+    header: 'Red',
+    cell: (props) => <RedCell red={props.getValue()} />,
+  }),
+  columnHelper.accessor('green', {
+    header: 'Green',
+    cell: (props) => <GreenCell green={props.getValue()} />,
+  }),
+  columnHelper.accessor('blue', {
+    header: 'Blue',
+    cell: (props) => <BlueCell blue={props.getValue()} />,
+  }),
   columnHelper.accessor('hue', { header: 'Hue' }),
   columnHelper.accessor('saturation', { header: 'Saturation' }),
   columnHelper.accessor('lightness', { header: 'Lightness' }),

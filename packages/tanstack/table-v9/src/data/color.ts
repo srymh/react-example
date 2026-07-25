@@ -60,3 +60,15 @@ function rgbToHsl(r: number, g: number, b: number) {
 
   return [h, s, l]
 }
+
+export function categorizeHue(hue: number) {
+  // 色相である程度分ける. 赤っぽい色、青っぽい色など
+  if (hue < 15 || hue >= 345) return 'Red'
+  if (hue < 45) return 'Orange'
+  if (hue < 70) return 'Yellow'
+  if (hue < 165) return 'Green'
+  if (hue < 195) return 'Cyan'
+  if (hue < 255) return 'Blue'
+  if (hue < 345) return 'Purple'
+  return 'Red'
+}
