@@ -13,6 +13,7 @@ import { Table as ComposableTable } from './table/composable/table'
 import { Table as ContextTable } from './table/context/table'
 import { Table as GlobalFilteringTable } from './table/global-filtering/table'
 import { Table as GroupingTable } from './table/grouping/table'
+import { Table as PaginationTable } from './table/pagination/table'
 import { Table as SortTable } from './table/sort/table'
 
 const data = createData(100)
@@ -21,6 +22,7 @@ export function App() {
   return (
     <div className="flex flex-col gap-4 p-2">
       <BasicTable data={data} />
+      <hr className="my-4 border-t border-slate-400" />
       <SortTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <ColumnOrderingTable data={data} />
@@ -37,6 +39,8 @@ export function App() {
       <GlobalFilteringTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <GroupingTable data={data} />
+      <hr className="my-4 border-t border-slate-400" />
+      <PaginationTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
