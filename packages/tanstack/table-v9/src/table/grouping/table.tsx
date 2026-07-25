@@ -9,6 +9,17 @@ import {
   createExpandedRowModel,
   createGroupedRowModel,
 } from '@tanstack/react-table'
+import type {
+  Cell,
+  CellData,
+  Cell_ColumnGrouping,
+  Column_ColumnGrouping,
+  Header,
+  RowData,
+  Row_ColumnGrouping,
+  Row_RowExpanding,
+  TableFeatures,
+} from '@tanstack/react-table'
 import {
   CirclePlusIcon,
   CircleMinusIcon,
@@ -90,7 +101,7 @@ export function Table({ data }: { data: Color[] }) {
     initialState: {
       grouping: ['hue-group'],
     },
-    groupedColumnMode: groupedColumnMode, // グループ化された列を先頭に移動する
+    groupedColumnMode: groupedColumnMode,
   })
 
   const handleReset = () => {
@@ -123,29 +134,9 @@ export function Table({ data }: { data: Color[] }) {
                 {(header) => (
                   <TableHeaderCell>
                     <div className="flex items-center justify-center gap-1">
-                      {header.column.getCanGroup() ? (
-                        <>
-                          {header.column.getIsGrouped() ? (
-                            <FolderTreeIcon className="inline-block h-4 w-4" />
-                          ) : null}
-                        </>
-                      ) : null}
-
+                      <TableHeaderCellGroupIcon header={header} />
                       <table.FlexRender header={header} />
-
-                      {header.column.getCanGroup() ? (
-                        <button
-                          type="button"
-                          className="cursor-pointer"
-                          onClick={header.column.getToggleGroupingHandler()}
-                        >
-                          {header.column.getIsGrouped() ? (
-                            <CircleMinusIcon className="inline-block h-3 w-3" />
-                          ) : (
-                            <CirclePlusIcon className="inline-block h-3 w-3" />
-                          )}
-                        </button>
-                      ) : null}
+                      <TableHeaderCellGroupToggleButton header={header} />
                     </div>
                   </TableHeaderCell>
                 )}
@@ -158,35 +149,9 @@ export function Table({ data }: { data: Color[] }) {
               <TableRow cells={row.getAllCells()}>
                 {(cell) => (
                   <TableCell>
-                    {cell.getIsGrouped() ? (
-                      <button
-                        onClick={row.getToggleExpandedHandler()}
-                        style={{
-                          cursor: row.getCanExpand() ? 'pointer' : 'normal',
-                        }}
-                      >
-                        {row.getIsExpanded() ? (
-                          <FolderOpenIcon className="mr-1 inline-block h-4 w-4 fill-amber-400" />
-                        ) : (
-                          <FolderIcon className="mr-1 inline-block h-4 w-4 fill-amber-400" />
-                        )}
-                        <table.FlexRender cell={cell} /> ({row.subRows.length.toLocaleString()})
-                      </button>
-                    ) : cell.getIsPlaceholder() ? (
-                      <>
-                        {cell.column.getGroupedIndex() === 0 ? (
-                          <div className="ml-1 text-gray-400">|</div>
-                        ) : row.getIsGrouped() ? (
-                          <div className="h-2 w-full rounded-2xl bg-gray-200 text-gray-400"></div>
-                        ) : (
-                          <div className="ml-1 text-gray-400">|</div>
-                        )}
-                      </>
-                    ) : row.getIsGrouped() ? (
-                      <div className="h-2 w-full rounded-2xl bg-gray-200 text-gray-400"></div>
-                    ) : (
+                    <TableCellWithGrouping cell={cell}>
                       <table.FlexRender cell={cell} />
-                    )}
+                    </TableCellWithGrouping>
                   </TableCell>
                 )}
               </TableRow>
@@ -208,4 +173,118 @@ export function Table({ data }: { data: Color[] }) {
       </div>
     </Card>
   )
+}
+
+type GroupableHeader<TFeatures extends TableFeatures, TData extends RowData> = Header<
+  TFeatures,
+  TData
+> & {
+  column: Header<TFeatures, TData>['column'] & Column_ColumnGrouping<TFeatures, TData>
+}
+
+type GroupableCell<
+  TFeatures extends TableFeatures,
+  TData extends RowData,
+  TValue extends CellData = CellData,
+> = Cell<TFeatures, TData, TValue> &
+  Cell_ColumnGrouping & {
+    column: Cell<TFeatures, TData, TValue>['column'] & Column_ColumnGrouping<TFeatures, TData>
+    row: Cell<TFeatures, TData, TValue>['row'] & Row_ColumnGrouping & Row_RowExpanding
+  }
+
+function TableHeaderCellGroupIcon<TFeatures extends TableFeatures, TData extends RowData>({
+  header,
+}: {
+  header: GroupableHeader<TFeatures, TData>
+}) {
+  const canGroup = header.column.getCanGroup()
+
+  if (!canGroup) {
+    return null
+  }
+
+  const isGrouped = header.column.getIsGrouped()
+
+  if (!isGrouped) {
+    return null
+  }
+
+  return <FolderTreeIcon className="inline-block h-4 w-4" />
+}
+
+function TableHeaderCellGroupToggleButton<TFeatures extends TableFeatures, TData extends RowData>({
+  header,
+}: {
+  header: GroupableHeader<TFeatures, TData>
+}) {
+  const canGroup = header.column.getCanGroup()
+
+  if (!canGroup) {
+    return null
+  }
+
+  const isGrouped = header.column.getIsGrouped()
+
+  const Icon = isGrouped ? CircleMinusIcon : CirclePlusIcon
+
+  return (
+    <button
+      type="button"
+      className="cursor-pointer"
+      onClick={header.column.getToggleGroupingHandler()}
+    >
+      <Icon className="inline-block h-3 w-3" />
+    </button>
+  )
+}
+
+function TableCellWithGrouping<
+  TFeatures extends TableFeatures,
+  TData extends RowData,
+  TValue extends CellData = CellData,
+>({
+  children,
+  cell,
+}: {
+  children?: React.ReactNode
+  cell: GroupableCell<TFeatures, TData, TValue>
+}) {
+  const isCellGrouped = cell.getIsGrouped()
+  const isPlaceholder = cell.getIsPlaceholder()
+  const isRowGrouped = cell.row.getIsGrouped()
+  const isRowExpanded = cell.row.getIsExpanded()
+  const canRowExpand = cell.row.getCanExpand()
+  const columnGroupedIndex = cell.column.getGroupedIndex()
+  const toggleExpandedHandler = cell.row.getToggleExpandedHandler()
+  const subRowsLength = cell.row.subRows.length
+
+  const shouldRenderValue = !isCellGrouped && !isPlaceholder && !isRowGrouped
+  const shouldRenderIndicator = isPlaceholder && (columnGroupedIndex === 0 || !isRowGrouped)
+
+  const Icon = isRowExpanded ? FolderOpenIcon : FolderIcon
+  const FolderOpeningIndicator = () => <div className="ml-1 text-gray-400">|</div>
+  const MaskedCell = () => <div className="h-2 w-full rounded-2xl bg-gray-200"></div>
+
+  if (shouldRenderValue) {
+    return children
+  }
+
+  if (isCellGrouped) {
+    return (
+      <button
+        onClick={toggleExpandedHandler}
+        className={`flex flex-nowrap items-center justify-center gap-1 truncate ${canRowExpand ? 'cursor-pointer' : ''}`}
+      >
+        <Icon className="h-3 w-3 fill-amber-400" />
+        {children}
+        <span className="text-xs text-gray-500">({subRowsLength.toString()})</span>
+      </button>
+    )
+  }
+
+  if (shouldRenderIndicator) {
+    return <FolderOpeningIndicator />
+  }
+
+  return <MaskedCell />
 }
