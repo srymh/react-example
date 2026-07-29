@@ -132,10 +132,10 @@ export function Table({ data }: { data: Color[] }) {
               <TableRow cells={row.getAllCells()}>
                 {(cell) => (
                   <TableCell
-                    className="w-(--header-cell-size) truncate"
+                    className="w-(--cell-size) truncate"
                     style={
                       {
-                        '--header-cell-size': `${cell.column.getSize()}px`,
+                        '--cell-size': `${cell.column.getSize()}px`,
                       } as React.CSSProperties
                     }
                   >

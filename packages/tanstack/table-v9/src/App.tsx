@@ -5,6 +5,7 @@ import { Table as ColumnFilteringWithMetaTable } from './table/column-filtering-
 import { Table as ColumnFilteringTable } from './table/column-filtering/table'
 import { Table as ColumnOrderingDndTable } from './table/column-ordering-dnd/table'
 import { Table as ColumnOrderingTable } from './table/column-ordering/table'
+import { Table as ColumnPinningTable } from './table/column-pinning/table'
 import { Table as ColumnResizingTable } from './table/column-resizing/table'
 import { Table as ColumnSizingTable } from './table/column-sizing/table'
 import { Table as ColumnVisibilityTable } from './table/column-visibility/table'
@@ -41,6 +42,8 @@ export function App() {
       <GroupingTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <PaginationTable data={data} />
+      <hr className="my-4 border-t border-slate-400" />
+      <ColumnPinningTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />

@@ -100,17 +100,16 @@ export function TableHeaderCell({
   className,
   style,
   ref,
-}: {
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-  ref?: React.Ref<HTMLTableCellElement>
-}) {
+  colSpan,
+  ...props
+}: React.ComponentProps<'th'>) {
   return (
     <th
       className={`sticky top-0 border-r border-b border-black bg-white px-1 py-0 ${className ?? ''}`}
       style={style}
       ref={ref}
+      colSpan={colSpan}
+      {...props}
     >
       {children}
     </th>
@@ -158,17 +157,13 @@ export function TableRow<TFeatures extends TableFeatures, TData extends RowData>
   )
 }
 
-export function TableCell({
-  children,
-  className,
-  style,
-}: {
-  children: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-}) {
+export function TableCell({ children, className, style, ...props }: React.ComponentProps<'td'>) {
   return (
-    <td className={`border-r border-b border-black px-1 py-0 ${className ?? ''}`} style={style}>
+    <td
+      {...props}
+      className={`border-r border-b border-black px-1 py-0 ${className ?? ''}`}
+      style={style}
+    >
       {children}
     </td>
   )
