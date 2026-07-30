@@ -64,12 +64,13 @@ export function Table({
 export function TableHead<TFeatures extends TableFeatures, TData extends RowData>({
   children,
   headerGroups,
+  ...props
 }: {
   children: (headerGroup: HeaderGroup<TFeatures, TData>) => React.ReactNode
   headerGroups: Array<HeaderGroup<TFeatures, TData>>
-}) {
+} & Omit<React.ComponentProps<'thead'>, 'children'>) {
   return (
-    <thead>
+    <thead {...props}>
       {headerGroups.map((headerGroup) => (
         <React.Fragment key={headerGroup.id}>{children(headerGroup)}</React.Fragment>
       ))}
