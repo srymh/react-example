@@ -144,12 +144,13 @@ export function TableBody<TFeatures extends TableFeatures, TData extends RowData
 export function TableRow<TFeatures extends TableFeatures, TData extends RowData>({
   children,
   cells,
+  ...props
 }: {
   children: (cell: Cell<TFeatures, TData>) => React.ReactNode
   cells: Array<Cell<TFeatures, TData>>
-}) {
+} & Omit<React.ComponentProps<'tr'>, 'children'>) {
   return (
-    <tr className="">
+    <tr {...props}>
       {cells.map((cell) => (
         <React.Fragment key={cell.id}>{children(cell)}</React.Fragment>
       ))}
