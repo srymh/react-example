@@ -16,6 +16,7 @@ import { Table as GlobalFilteringTable } from './table/global-filtering/table'
 import { Table as GroupingTable } from './table/grouping/table'
 import { Table as PaginationTable } from './table/pagination/table'
 import { Table as RowPinningTable } from './table/row-pinning/table'
+import { Table as RowSelectionTable } from './table/row-selection/table'
 import { Table as SortTable } from './table/sort/table'
 
 const data = createData(100)
@@ -46,6 +47,8 @@ export function App() {
       <hr className="my-4 border-t border-slate-400" />
       <ColumnPinningTable data={data} />
       <RowPinningTable data={data} />
+      <hr className="my-4 border-t border-slate-400" />
+      <RowSelectionTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
