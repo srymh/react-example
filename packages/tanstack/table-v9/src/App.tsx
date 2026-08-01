@@ -1,5 +1,6 @@
 import { createData } from './data/color'
 import { Table as BasicTable } from './table/basic/table'
+import { Table as CellSelectionTable } from './table/cell-selection/table'
 import { Table as ColumnFacetingTable } from './table/column-faceting/table'
 import { Table as ColumnFilteringWithMetaTable } from './table/column-filtering-with-meta/table'
 import { Table as ColumnFilteringTable } from './table/column-filtering/table'
@@ -48,7 +49,11 @@ export function App() {
       <ColumnPinningTable data={data} />
       <RowPinningTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Row & Cell Selection
+      </h2>
       <RowSelectionTable data={data} />
+      <CellSelectionTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <ComposableTable data={data} />
       <ComponentRegistryTable data={data} />
