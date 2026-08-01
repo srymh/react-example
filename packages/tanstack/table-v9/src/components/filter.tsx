@@ -96,7 +96,7 @@ export function NumberRangeFilter({
   }
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
+    <div className="flex w-max flex-wrap items-center justify-center gap-1">
       <input
         type="number"
         placeholder="min"
@@ -105,14 +105,14 @@ export function NumberRangeFilter({
         // https://react.dev/link/controlled-components
         value={minValue}
         onChange={handleChangeMin}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
+        className="w-16 border border-slate-400 bg-white px-1 py-0 text-xs"
       />
       <input
         type="number"
         placeholder="max"
         value={maxValue}
         onChange={handleChangeMax}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
+        className="w-16 border border-slate-400 bg-white px-1 py-0 text-xs"
       />
     </div>
   )
@@ -145,7 +145,7 @@ export function NumberEqualsFilter({
   }
 
   return (
-    <div className="flex w-full flex-wrap items-center justify-center gap-1 pb-1">
+    <div className="flex w-full flex-wrap items-center justify-center gap-1">
       <input
         type="number"
         placeholder="equals"
@@ -154,7 +154,7 @@ export function NumberEqualsFilter({
         // https://react.dev/link/controlled-components
         value={value ?? ''}
         onChange={handleChange}
-        className="w-16 border border-slate-400 px-1 py-0 text-xs"
+        className="w-16 border border-slate-400 bg-white px-1 py-0 text-xs"
       />
     </div>
   )

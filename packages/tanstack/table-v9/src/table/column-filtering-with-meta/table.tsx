@@ -153,8 +153,10 @@ export function Table({ data }: { data: Color[] }) {
               <TableHeaderRow headers={headerGroup.headers}>
                 {(header) => (
                   <TableHeaderCell>
-                    <table.FlexRender header={header} />
-                    {header.column.getCanFilter() && <Filter column={header.column} />}
+                    <div className="flex h-full w-full flex-col items-center justify-center py-0.5">
+                      <table.FlexRender header={header} />
+                      {header.column.getCanFilter() && <Filter column={header.column} />}
+                    </div>
                   </TableHeaderCell>
                 )}
               </TableHeaderRow>

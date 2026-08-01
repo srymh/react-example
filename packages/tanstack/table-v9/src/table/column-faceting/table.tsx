@@ -49,8 +49,14 @@ function getRangeBucket(value: number): RangeBucket {
 
 const rangeBucketFilter = constructFilterFn({
   resolveDataValue: (value) => getRangeBucket(value as number),
-  filter: (bucket, selected: Array<RangeBucket>) => selected.includes(bucket),
-  autoRemove: (selected: Array<RangeBucket>) => selected.length === 0,
+  filter: (dataValue, filterValue) => {
+    const result = filterValue === dataValue
+    console.log(`dataValue: ${dataValue}, filterValue: ${filterValue}, result: ${result}`)
+    return result
+  },
+  autoRemove: (filterValue) => {
+    return filterValue == null
+  },
 })
 
 const features = tableFeatures({
@@ -174,8 +180,10 @@ export function Table({ data }: { data: Color[] }) {
               <TableHeaderRow headers={headerGroup.headers}>
                 {(header) => (
                   <TableHeaderCell>
-                    <table.FlexRender header={header} />
-                    {header.column.getCanFilter() && <Filter column={header.column} />}
+                    <div className="flex h-full w-full flex-col items-center justify-center py-0.5">
+                      <table.FlexRender header={header} />
+                      {header.column.getCanFilter() && <Filter column={header.column} />}
+                    </div>
                   </TableHeaderCell>
                 )}
               </TableHeaderRow>

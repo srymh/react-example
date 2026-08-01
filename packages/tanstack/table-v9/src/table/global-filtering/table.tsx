@@ -85,7 +85,17 @@ export function Table({ data }: { data: Color[] }) {
   return (
     <Card title="Global Filtering" description="Global filtering with useTable and tableFeatures">
       <div className="min-w-30 flex-1 overflow-auto">
-        <TableComponent>
+        <TableComponent
+          renderTopController={
+            <div className="flex h-full w-full items-center justify-start gap-1 px-1 py-1">
+              <NumberRangeFilterForUnsafeValue
+                value={table.state.globalFilter}
+                onChangeValue={(value) => table.setGlobalFilter(value)}
+              />
+              <Button onClick={handleResetGlobalFilter}>Clear</Button>
+            </div>
+          }
+        >
           <TableHead headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (
               <TableHeaderRow headers={headerGroup.headers}>
@@ -116,12 +126,6 @@ export function Table({ data }: { data: Color[] }) {
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
           <Button onClick={handleResetGlobalFilter}>Reset</Button>
           <Button onClick={handleResetInitialGlobalFilter}>Reset Initial</Button>
-          <NumberRangeFilterForUnsafeValue
-            value={table.state.globalFilter}
-            onChangeValue={(value: any) => {
-              table.setGlobalFilter(value)
-            }}
-          />
         </div>
         <pre className="m-0 overflow-auto p-2 text-xs">{JSON.stringify(table.state, null, 2)}</pre>
       </div>
