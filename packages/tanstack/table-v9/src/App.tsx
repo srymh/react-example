@@ -27,25 +27,49 @@ export function App() {
     <div className="flex flex-col gap-4 p-2">
       <BasicTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Sortable Table
+      </h2>
       <SortTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Column Ordering
+      </h2>
       <ColumnOrderingTable data={data} />
       <ColumnOrderingDndTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Column Sizing & Resizing
+      </h2>
       <ColumnSizingTable data={data} />
       <ColumnResizingTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Column Visibility
+      </h2>
       <ColumnVisibilityTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Column & Global Filtering
+      </h2>
       <ColumnFilteringTable data={data} />
       <ColumnFilteringWithMetaTable data={data} />
       <ColumnFacetingTable data={data} />
       <GlobalFilteringTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Grouping
+      </h2>
       <GroupingTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Pagination
+      </h2>
       <PaginationTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
+      <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
+        Row & Column Pinning
+      </h2>
       <ColumnPinningTable data={data} />
       <RowPinningTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
