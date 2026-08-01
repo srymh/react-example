@@ -10,29 +10,22 @@ import {
   filterFn_equals,
   metaHelper,
 } from '@tanstack/react-table'
-import type { Column, Updater } from '@tanstack/react-table'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
 import { ColorCell } from '../../components/color-cell'
 import {
-  NumberEqualsFilterForUnsafeValue,
-  NumberRangeFilterForUnsafeValue,
-} from '../../components/filter'
-import {
   Table as TableComponent,
   TableCell,
-  TableHeaderCell,
   TableHeaderRow,
   TableRow,
   TableHead,
   TableBody,
 } from '../../components/table'
 import type { Color } from '../../data/color'
-
-type MyColumnMeta = {
-  filterVariant?: 'number-range' | 'number-equals'
-}
+import { Filter } from './filter'
+import type { MyColumnMeta } from './filter'
+import { TableHeaderCellWithFilter } from './table-header-cell-with-filter'
 
 const features = tableFeatures({
   columnFilteringFeature,
@@ -111,14 +104,14 @@ export function Table({ data }: { data: Color[] }) {
   /**
    * Reset to `"columnFilters": {}`
    */
-  const handleResetColumnFilters = () => {
+  const handleReset = () => {
     table.resetColumnFilters(true)
   }
 
   /**
    * Reset to `"columnFilters": initialState.columnFilters`
    */
-  const handleResetInitialColumnFilters = () => {
+  const handleResetInitial = () => {
     table.resetColumnFilters()
   }
 
@@ -152,12 +145,12 @@ export function Table({ data }: { data: Color[] }) {
             {(headerGroup) => (
               <TableHeaderRow headers={headerGroup.headers}>
                 {(header) => (
-                  <TableHeaderCell>
-                    <div className="flex h-full w-full flex-col items-center justify-center py-0.5">
-                      <table.FlexRender header={header} />
-                      {header.column.getCanFilter() && <Filter column={header.column} />}
-                    </div>
-                  </TableHeaderCell>
+                  <TableHeaderCellWithFilter
+                    canFilter={header.column.getCanFilter()}
+                    renderFilter={<Filter column={header.column} />}
+                  >
+                    <table.FlexRender header={header} />
+                  </TableHeaderCellWithFilter>
                 )}
               </TableHeaderRow>
             )}
@@ -179,29 +172,12 @@ export function Table({ data }: { data: Color[] }) {
 
       <div className="flex h-full w-50 shrink-0 flex-col gap-0 border border-slate-400 bg-slate-100">
         <div className="flex flex-wrap items-center justify-center gap-1 border-b border-slate-400 p-1">
-          <Button onClick={handleResetColumnFilters}>Reset</Button>
-          <Button onClick={handleResetInitialColumnFilters}>Reset Initial</Button>
+          <Button onClick={handleReset}>Reset</Button>
+          <Button onClick={handleResetInitial}>Reset Initial</Button>
           <Button onClick={handleFilterGreen}>Filter Green</Button>
         </div>
         <pre className="m-0 overflow-auto p-2 text-xs">{JSON.stringify(table.state, null, 2)}</pre>
       </div>
     </Card>
   )
-}
-
-function Filter({ column }: { column: Column<typeof features, Color, unknown> }) {
-  const filterVariant = column.columnDef.meta?.filterVariant
-  const value = column.getFilterValue()
-  const handleChangeValue = (updater: Updater<unknown>) => {
-    column.setFilterValue(updater)
-  }
-
-  switch (filterVariant) {
-    case 'number-range':
-      return <NumberRangeFilterForUnsafeValue value={value} onChangeValue={handleChangeValue} />
-    case 'number-equals':
-      return <NumberEqualsFilterForUnsafeValue value={value} onChangeValue={handleChangeValue} />
-    default:
-      return <></>
-  }
 }
