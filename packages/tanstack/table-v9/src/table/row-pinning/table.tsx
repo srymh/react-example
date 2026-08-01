@@ -6,7 +6,7 @@ import {
   createColumnHelper,
   rowPinningFeature,
 } from '@tanstack/react-table'
-import { PanelRightIcon } from 'lucide-react'
+import { PanelRightCloseIcon, PanelRightOpenIcon } from 'lucide-react'
 
 import { Button } from '../../components/button'
 import { Card } from '../../components/card'
@@ -90,17 +90,52 @@ export function Table({ data }: { data: Color[] }) {
 
   const { pinnedRowOffsets, tableHeadRef, setPinnedRowRef } = usePinnedRowOffsets(table)
 
+  const [showRightPanel, setShowRightPanel] = useState(false)
+
   return (
     <Card title="Row Pinning" description="Row pinning with useTable and tableFeatures">
       <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent
           renderTopController={
             <div className="flex w-full items-center justify-end px-1 py-0.5">
-              <button onClick={() => setShowAction((prev) => !prev)}>
-                <PanelRightIcon className="h-4 w-4" />
+              <button onClick={() => setShowRightPanel((prev) => !prev)}>
+                {showRightPanel ? (
+                  <PanelRightCloseIcon className="h-4 w-4" />
+                ) : (
+                  <PanelRightOpenIcon className="h-4 w-4" />
+                )}
               </button>
             </div>
           }
+          renderRightPanel={
+            <div className="flex h-full w-full flex-col">
+              <button
+                className="flex w-full items-center justify-end px-1 py-0.5"
+                onClick={() => setShowRightPanel((prev) => !prev)}
+              >
+                {showRightPanel ? (
+                  <PanelRightCloseIcon className="h-4 w-4" />
+                ) : (
+                  <PanelRightOpenIcon className="h-4 w-4" />
+                )}
+              </button>
+              <div className="m-2 min-h-0 w-full flex-1">
+                <div className="flex items-center gap-1">
+                  <input
+                    id="show-action"
+                    type="checkbox"
+                    checked={showAction}
+                    onChange={(e) => setShowAction(e.target.checked)}
+                  />
+                  <label htmlFor="show-action" className="text-nowrap">
+                    Show Action Column
+                  </label>
+                </div>
+              </div>
+            </div>
+          }
+          showRightPanel={showRightPanel}
+          onRightPanelClose={() => setShowRightPanel(false)}
         >
           <TableHead ref={tableHeadRef} headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (

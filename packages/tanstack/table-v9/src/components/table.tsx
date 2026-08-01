@@ -21,6 +21,9 @@ export function Table({
   fullWidth = true,
   renderTopController,
   renderBottomController,
+  renderRightPanel,
+  showRightPanel,
+  onRightPanelClose,
 }: {
   children: React.ReactNode
   className?: string
@@ -28,9 +31,12 @@ export function Table({
   fullWidth?: boolean
   renderTopController?: React.ReactNode
   renderBottomController?: React.ReactNode
+  renderRightPanel?: React.ReactNode
+  showRightPanel?: boolean
+  onRightPanelClose?: () => void
 }) {
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded border border-black bg-white text-black">
+    <div className="relative flex h-full w-full flex-col overflow-hidden rounded border border-black bg-white text-black">
       {renderTopController && (
         <div
           className={`w-full shrink-0 border-b border-black bg-gray-100 ${controllerPlaceholderBackgroundClassName}`}
@@ -56,6 +62,22 @@ export function Table({
         >
           {renderBottomController}
         </div>
+      )}
+
+      {renderRightPanel && (
+        <>
+          {showRightPanel && (
+            <div onClick={onRightPanelClose} className="transparent absolute inset-0 z-999"></div>
+          )}
+          <div
+            className={
+              'absolute top-0 right-0 bottom-0 z-1000 h-full overflow-hidden bg-white/20 backdrop-blur-md transition-all' +
+              (showRightPanel ? ' w-80 border-l' : ' w-0')
+            }
+          >
+            {renderRightPanel}
+          </div>
+        </>
       )}
     </div>
   )
