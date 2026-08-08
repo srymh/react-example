@@ -13,6 +13,7 @@ import { Table as ColumnVisibilityTable } from './table/column-visibility/table'
 import { Table as ComponentRegistryTable } from './table/component-registry/table'
 import { Table as ComposableTable } from './table/composable/table'
 import { Table as ContextTable } from './table/context/table'
+import { Table as GlobalFilteringWithFuzzyTable } from './table/global-filtering-with-fuzzy/table'
 import { Table as GlobalFilteringTable } from './table/global-filtering/table'
 import { Table as GroupingTable } from './table/grouping/table'
 import { Table as PaginationTable } from './table/pagination/table'
@@ -56,6 +57,7 @@ export function App() {
       <ColumnFilteringWithMetaTable data={data} />
       <ColumnFacetingTable data={data} />
       <GlobalFilteringTable data={data} />
+      <GlobalFilteringWithFuzzyTable data={data} />
       <hr className="my-4 border-t border-slate-400" />
       <h2 className="linear-gradient-text rounded bg-linear-to-r from-slate-500 to-slate-200 px-2 py-2 text-lg font-bold text-white">
         Grouping

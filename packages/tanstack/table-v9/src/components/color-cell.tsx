@@ -1,11 +1,23 @@
+import { rgbToHex } from '../data/color'
 import type { Color } from '../data/color'
 
-export function ColorCell({ red, green, blue }: Color) {
+export function ColorCell({ red, green, blue, quiet = true }: Color & { quiet?: boolean }) {
   const style = {
     backgroundColor: `rgb(${red}, ${green}, ${blue})`,
   }
 
-  return <div className="h-4 w-full" style={style} />
+  const textStrokeClassName =
+    '[text-shadow:-1px_-1px_0_white,0_-1px_0_white,1px_-1px_0_white,-1px_0_0_white,1px_0_0_white,-1px_1px_0_white,0_1px_0_white,1px_1px_0_white]'
+
+  return (
+    <div
+      // 文字を白で縁取りするために、text-shadow を使用する。
+      className={'h-4 w-full truncate px-2 font-mono text-xs ' + textStrokeClassName}
+      style={style}
+    >
+      {!quiet && rgbToHex(red, green, blue)}
+    </div>
+  )
 }
 
 export function RedCell({ red, quiet = false }: { red: number; quiet?: boolean }) {
