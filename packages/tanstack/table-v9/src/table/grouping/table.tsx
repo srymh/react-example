@@ -176,7 +176,7 @@ type GroupableHeader<TFeatures extends TableFeatures, TData extends RowData> = H
   TFeatures,
   TData
 > & {
-  column: Header<TFeatures, TData>['column'] & Column_ColumnGrouping<TFeatures, TData>
+  column: Header<TFeatures, TData>['column'] & Column_ColumnGrouping
 }
 
 type GroupableCell<
@@ -185,7 +185,7 @@ type GroupableCell<
   TValue extends CellData = CellData,
 > = Cell<TFeatures, TData, TValue> &
   Cell_ColumnGrouping & {
-    column: Cell<TFeatures, TData, TValue>['column'] & Column_ColumnGrouping<TFeatures, TData>
+    column: Cell<TFeatures, TData, TValue>['column'] & Column_ColumnGrouping
     row: Cell<TFeatures, TData, TValue>['row'] & Row_ColumnGrouping & Row_RowExpanding
   }
 

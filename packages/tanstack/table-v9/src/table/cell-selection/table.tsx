@@ -81,7 +81,7 @@ export function Table({ data }: { data: Color[] }) {
       description="Cell selection allows you to select cells in the table."
     >
       <div className="min-w-30 flex-1 overflow-auto">
-        <TableComponent renderBottomController={<CellSelectionController table={table} />}>
+        <TableComponent bottomControllerSlot={<CellSelectionController table={table} />}>
           <TableHead headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (
               <TableHeaderRow headers={headerGroup.headers}>

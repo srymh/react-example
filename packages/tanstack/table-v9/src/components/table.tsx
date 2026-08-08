@@ -14,37 +14,65 @@ import { SortAscIcon, SortDescIcon } from 'lucide-react'
 const controllerPlaceholderBackgroundClassName =
   'bg-[repeating-linear-gradient(to_right,transparent,transparent_10px,#e5e7eb_10px,#e5e7eb_11px,transparent_11px,transparent_20px),repeating-linear-gradient(to_bottom,transparent,transparent_10px,#e5e7eb_10px,#e5e7eb_11px,transparent_11px,transparent_20px)]'
 
+type TableSlot<TOptions> = React.ReactNode | ((options: TOptions) => React.ReactNode)
+function renderTableSlot<TOptions>(options: TOptions, slot?: TableSlot<TOptions>) {
+  if (!slot) return null
+  if (typeof slot === 'function') {
+    return slot(options)
+  }
+  return slot
+}
+
+type RightPanelControl = {
+  isRightPanelOpen: boolean
+  closeRightPanel: () => void
+  toggleRightPanel: () => void
+}
+
+export type TableTopControllerOptions = RightPanelControl
+
+export type TableBottomControllerOptions = RightPanelControl
+
+export type TableRightPanelOptions = RightPanelControl
+
 export function Table({
   children,
   className,
   style,
   fullWidth = true,
-  renderTopController,
-  renderBottomController,
-  renderRightPanel,
-  showRightPanel,
-  onRightPanelClose,
+  topControllerSlot,
+  bottomControllerSlot,
+  rightPanelSlot,
 }: {
   children: React.ReactNode
   className?: string
   style?: React.CSSProperties
   fullWidth?: boolean
-  renderTopController?: React.ReactNode
-  renderBottomController?: React.ReactNode
-  renderRightPanel?: React.ReactNode
-  showRightPanel?: boolean
-  onRightPanelClose?: () => void
+  topControllerSlot?: TableSlot<TableTopControllerOptions>
+  bottomControllerSlot?: TableSlot<TableBottomControllerOptions>
+  rightPanelSlot?: TableSlot<TableRightPanelOptions>
 }) {
+  const [isRightPanelOpen, setIsRightPanelOpen] = React.useState(false)
+  const closeRightPanel = () => setIsRightPanelOpen(false)
+  const toggleRightPanel = () => setIsRightPanelOpen((prev) => !prev)
+
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded border border-black bg-white text-black">
-      {renderTopController && (
+      {/* -------------------------------------------------------------------------------------- */}
+      {/* Top controller slot */}
+      {topControllerSlot && (
         <div
           className={`w-full shrink-0 border-b border-black bg-gray-100 ${controllerPlaceholderBackgroundClassName}`}
         >
-          {renderTopController}
+          {renderTableSlot(
+            { isRightPanelOpen, closeRightPanel, toggleRightPanel },
+            topControllerSlot,
+          )}
         </div>
       )}
 
+      {/* -------------------------------------------------------------------------------------- */}
+      {/* Table content */}
       <div className="min-h-0 w-full min-w-0 flex-1 overflow-hidden bg-white">
         <div className="flow-root h-[calc(100%+1px)] w-[calc(100%+1px)] overflow-auto overscroll-none bg-[repeating-linear-gradient(135deg,#f0f0f0,#f0f0f0_1px,transparent_1px,transparent_4px)]">
           <table
@@ -56,28 +84,36 @@ export function Table({
         </div>
       </div>
 
-      {renderBottomController && (
+      {/* -------------------------------------------------------------------------------------- */}
+      {/* Bottom controller slot */}
+      {bottomControllerSlot && (
         <div
           className={`w-full shrink-0 border-t border-black bg-gray-100 ${controllerPlaceholderBackgroundClassName}`}
         >
-          {renderBottomController}
+          {renderTableSlot(
+            { isRightPanelOpen, closeRightPanel, toggleRightPanel },
+            bottomControllerSlot,
+          )}
         </div>
       )}
 
-      {renderRightPanel && (
-        <>
-          {showRightPanel && (
-            <div onClick={onRightPanelClose} className="transparent absolute inset-0 z-999"></div>
-          )}
-          <div
-            className={
-              'absolute top-0 right-0 bottom-0 z-1000 h-full overflow-hidden bg-white/20 backdrop-blur-md transition-all' +
-              (showRightPanel ? ' w-80 border-l' : ' w-0')
-            }
-          >
-            {renderRightPanel}
-          </div>
-        </>
+      {/* -------------------------------------------------------------------------------------- */}
+      {/* Right panel overlay */}
+      {rightPanelSlot && isRightPanelOpen && (
+        <div onClick={closeRightPanel} className="transparent absolute inset-0 z-999"></div>
+      )}
+
+      {/* -------------------------------------------------------------------------------------- */}
+      {/* Right panel slot */}
+      {rightPanelSlot && (
+        <div
+          className={
+            'absolute top-0 right-0 bottom-0 z-1000 h-full overflow-hidden bg-white/20 backdrop-blur-md transition-all' +
+            (isRightPanelOpen ? ' w-80 border-l' : ' w-0')
+          }
+        >
+          {renderTableSlot({ isRightPanelOpen, closeRightPanel, toggleRightPanel }, rightPanelSlot)}
+        </div>
       )}
     </div>
   )

@@ -86,7 +86,7 @@ export function Table({ data }: { data: Color[] }) {
     <Card title="Global Filtering" description="Global filtering with useTable and tableFeatures">
       <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent
-          renderTopController={
+          topControllerSlot={
             <div className="flex h-full w-full items-center justify-start gap-1 px-1 py-1">
               <NumberRangeFilterForUnsafeValue
                 value={table.state.globalFilter}

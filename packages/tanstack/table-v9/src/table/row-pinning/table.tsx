@@ -90,30 +90,28 @@ export function Table({ data }: { data: Color[] }) {
 
   const { pinnedRowOffsets, tableHeadRef, setPinnedRowRef } = usePinnedRowOffsets(table)
 
-  const [showRightPanel, setShowRightPanel] = useState(false)
-
   return (
     <Card title="Row Pinning" description="Row pinning with useTable and tableFeatures">
       <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent
-          renderTopController={
+          topControllerSlot={({ isRightPanelOpen, toggleRightPanel }) => (
             <div className="flex w-full items-center justify-end px-1 py-0.5">
-              <button onClick={() => setShowRightPanel((prev) => !prev)}>
-                {showRightPanel ? (
+              <button onClick={toggleRightPanel}>
+                {isRightPanelOpen ? (
                   <PanelRightCloseIcon className="h-4 w-4" />
                 ) : (
                   <PanelRightOpenIcon className="h-4 w-4" />
                 )}
               </button>
             </div>
-          }
-          renderRightPanel={
+          )}
+          rightPanelSlot={({ isRightPanelOpen, toggleRightPanel }) => (
             <div className="flex h-full w-full flex-col">
               <button
                 className="flex w-full items-center justify-end px-1 py-0.5"
-                onClick={() => setShowRightPanel((prev) => !prev)}
+                onClick={toggleRightPanel}
               >
-                {showRightPanel ? (
+                {isRightPanelOpen ? (
                   <PanelRightCloseIcon className="h-4 w-4" />
                 ) : (
                   <PanelRightOpenIcon className="h-4 w-4" />
@@ -133,9 +131,7 @@ export function Table({ data }: { data: Color[] }) {
                 </div>
               </div>
             </div>
-          }
-          showRightPanel={showRightPanel}
-          onRightPanelClose={() => setShowRightPanel(false)}
+          )}
         >
           <TableHead ref={tableHeadRef} headerGroups={table.getHeaderGroups()}>
             {(headerGroup) => (

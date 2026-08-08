@@ -76,7 +76,7 @@ export function Table({ data }: { data: Color[] }) {
     <Card title="Pagination" description="Table with pagination using useTable and tableFeatures">
       <div className="min-w-30 flex-1 overflow-auto">
         <TableComponent
-          renderBottomController={
+          bottomControllerSlot={
             <div className="flex w-full items-center justify-between px-1 py-1 text-sm">
               <div className="flex items-center justify-start gap-2">
                 <div className="grid grid-cols-[auto_auto_auto] items-center gap-1 font-mono">
