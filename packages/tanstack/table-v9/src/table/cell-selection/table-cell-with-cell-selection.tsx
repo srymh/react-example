@@ -58,7 +58,7 @@ export function TableCellWithSelection<
       {...dataIsFocused}
       {...dataSelectedState}
       style={style}
-      className="relative [box-shadow:inset_var(--cell-edge-top),inset_var(--cell-edge-right),inset_var(--cell-edge-bottom),inset_var(--cell-edge-left)] select-none data-[selected-state=focused]:bg-blue-200 data-[selected-state=selected]:bg-blue-50"
+      className="relative cursor-crosshair [box-shadow:inset_var(--cell-edge-top),inset_var(--cell-edge-right),inset_var(--cell-edge-bottom),inset_var(--cell-edge-left)] select-none data-[selected-state=focused]:bg-blue-200 data-[selected-state=selected]:bg-blue-50"
       onMouseDown={canSelect ? cell.getSelectionStartHandler() : undefined}
       onMouseEnter={canSelect ? cell.getSelectionExtendHandler() : undefined}
     >

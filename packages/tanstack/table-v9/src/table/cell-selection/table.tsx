@@ -33,7 +33,7 @@ const columns = columnHelper.columns([
   columnHelper.accessor(({ red, green, blue }) => rgbToHex(red, green, blue), {
     id: 'color',
     header: 'Color',
-    cell: (props) => <ColorCell {...props.row.original} />,
+    cell: (props) => <ColorCell {...props.row.original} quiet={false} />,
   }),
   columnHelper.accessor('red', { header: 'Red' }),
   columnHelper.accessor('green', { header: 'Green' }),
